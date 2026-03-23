@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generator Testova — Uputstvo</title>
+    <style>
+      /* Based on Simple.css https://github.com/kevquirk/simple.css */
+
+      /* Global variables */
+      :root {
+        --sans-font:
+          -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
+          "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
+          "Helvetica Neue", sans-serif;
+        --mono-font:
+          Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+
+        --border-width: 1px;
+        --border: #898ea4;
+
+        --bg: #fff;
+        --text: #212121;
+        --text-light: #585858;
+      }
+
+      /* Reset box-sizing */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: var(--sans-font);
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        margin: 0 auto;
+        padding: 0.5rem 2rem;
+        width: 50rem;
+      }
+
+      h1,
+      h2 {
+        line-height: 1.1;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-top: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-top: 2rem;
+      }
+
+      p {
+        margin: 1rem 0;
+      }
+
+      h1 ~ p {
+        font-size: 1.5rem;
+        margin: 0.5rem 0;
+      }
+
+      ul,
+      ol {
+        padding: 0 1.1rem;
+      }
+
+      code {
+        font-family: var(--mono-font);
+        font-size: 1.05rem;
+        font-weight: bold;
+      }
+
+      footer hr {
+        background: var(--border);
+        border: none;
+        height: var(--border-width);
+        margin: 3rem auto 1rem;
+      }
+
+      footer p {
+        color: var(--text-light);
+        font-size: 0.75rem;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Generator Testova</h1>
+      <p>Uputstvo za upotrebu</p>
+    </header>
+
+    <section>
+      <h2>Opis</h2>
+      <p>
+        <i>Generator Testova</i> je program za automatsko generisanje testova za
+        teorijsku provjeru znanja. Učitava podatke iz Excel formulara (<i
+          >.xlsm</i
+        >
+        fajl) i na osnovu tih podataka kreira poseban Word dokument sa odabranim
+        pitanjima za svaku oblast. Svi dokumenti za jednog kandidata su sačuvani
+        u folderu sa imenom tog kandidata.
+      </p>
+    </section>
+
+    <section>
+      <h2>Priprema</h2>
+      <p>Prije pokretanja programa, provjerite sljedeće:</p>
+      <ul>
+        <li>
+          Excel formular je ispravno popunjen i sadrži:
+          <ul>
+            <li>podatke o kontroloru (ćelija B4),</li>
+            <li>podatke o procjenjivaču (ćelija B5),</li>
+            <li>nazive oblasti (ćelije A10&ndash;A29),</li>
+            <li>skraćenice oblasti u zagradama (ćelije A10&ndash;A29),</li>
+            <li>ukupan broj pitanja za svaku oblast (ćelije D10&ndash;D29),</li>
+            <li>
+              procenat pitanja za generisanje za svaku oblast (ćelije
+              E10&ndash;E29),
+            </li>
+            <li>
+              generisane brojeve pitanja za svaku oblast koji se dobijaju pomoću
+              dugmeta <b>Osvježi pitanja</b> (ćelije F10&ndash;F29).
+            </li>
+          </ul>
+        </li>
+        <li>Excel formular je sačuvan nakon izmijena.</li>
+        <li>
+          Folder <code>pitanja</code> u folderu <code>baza</code> sadrži foldere
+          za svaku oblast iz Excel formulara. Nazivi ovih foldera trebaju biti
+          isti kao i skraćenice oblasti u zagradama, kako je upisano u Excel
+          formularu. Npr. za predmet
+          <i>Lokalni postupci i izvori informacija</i> skraćenica u zagradama je
+          <i>LPI</i>. Naziv foldera treba bit <code>lpi</code>.
+        </li>
+        <li>
+          Folder za svaku oblast sadrži količinu pitanja koja odgovara navedenom
+          broju ukupnog broja pitanja u Excel formularu. Svako pitanje je
+          sačuvano u posebnom Word dokumentu. Naziv fajla odgovara broju
+          pitanja. Npr.
+          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, itd.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Upotreba</h2>
+      <ol>
+        <li>
+          Pokrenite program dvoklikom na <code>generator-testova.exe</code>.
+        </li>
+        <li>
+          Program će prikazati informacije o kandidatu, procjenjivaču, oblastima
+          i generisanim testovima.
+        </li>
+        <li>Pritisnite <b>Enter</b> da zatvorite program.</li>
+      </ol>
+      <p>
+        Generisani testovi će biti sačuvani u folderu
+        <code>generisani-testovi</code>.
+      </p>
+    </section>
+
+    <footer>
+      <hr />
+      <p>Verzija: X.X.X</p>
+      <p>Datum: DD-MM-YYYY</p>
+    </footer>
+  </body>
+</html>
