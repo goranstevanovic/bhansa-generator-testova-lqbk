@@ -1,5 +1,6 @@
 """User interface functions."""
 
+import os
 from pathlib import Path
 
 from config import PROGRAM_TITLE
@@ -47,14 +48,17 @@ def print_subjects_summary(subjects: list[SubjectData]) -> None:
 
 
 def print_test_generation_done(generated_tests: list[Path]) -> None:
-    output_folder, candidate_folder, _ = str(generated_tests[0]).split("/")
+    normalized_path = os.path.normpath(generated_tests[0])
+    output_folder, candidate_folder, _ = normalized_path.split(os.sep)
 
     print("Testovi su generisani.")
     print()
     print(f"Testovi su sačuvani u folderu '{output_folder}' / '{candidate_folder}'")
 
     for test in generated_tests:
-        file_name = str(test).split("/")[2]
+        normalized_path = os.path.normpath(test)
+        file_name = normalized_path.split(os.sep)[2]
+
         print(f"  - {file_name}")
 
 

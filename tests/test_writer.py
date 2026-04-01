@@ -90,13 +90,13 @@ class TestCreateOutputDocumentPath:
         result = create_output_document_path(sample_subject, sample_employee)
 
         expected_result = (
-            f"{SAMPLE_OUTPUT_PATH}/"
-            f"{sample_employee['name']} {sample_employee['license']}/"
-            f"{sample_employee['name']} {sample_employee['license']} "
+            Path(SAMPLE_OUTPUT_PATH)
+            / f"{sample_employee['name']} {sample_employee['license']}"
+            / f"{sample_employee['name']} {sample_employee['license']} "
             f"{sample_subject['abbreviation'].upper()}.docx"
         )
 
-        assert str(result) == expected_result
+        assert result == expected_result
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     def test_creates_folder_if_not_exists(self, sample_subject, sample_employee):
