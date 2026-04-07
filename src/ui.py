@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+from _version import VERSION, DATE, IS_TEST_BUILD
 from config import PROGRAM_TITLE
 from models import EmployeeData, SubjectData
 
@@ -10,6 +11,11 @@ from models import EmployeeData, SubjectData
 def print_title() -> None:
     print()
     print(PROGRAM_TITLE)
+    print(f"Verzija: {VERSION} ({DATE})")
+
+    if IS_TEST_BUILD:
+        print("[TEST BUILD]")
+
     print()
 
 

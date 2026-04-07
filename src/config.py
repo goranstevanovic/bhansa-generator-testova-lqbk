@@ -6,7 +6,7 @@ from pathlib import Path
 PROGRAM_TITLE = "GENERATOR TESTOVA"
 
 # Question number generator file
-QUESTIONS_GENERATOR = "TRE.FORM.371.xlsm"
+QUESTIONS_GENERATOR = "FORM.xlsm"
 
 # Cell addresses for employees' data
 CANDIDATE_CELL = "B4"
