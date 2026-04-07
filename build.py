@@ -171,7 +171,9 @@ def create_folder_structure() -> list[list[Path]]:
 
     # Move executable file into bundle folder
     if get_platform() == "win32":
-        shutil.move(WINDOWS_EXE_PATH, BUNDLE_ROOT_FOLDER_TEMP_NAME)
+        shutil.move(
+            WINDOWS_EXE_PATH, BUNDLE_ROOT_FOLDER_TEMP_NAME / "generator-testova.exe"
+        )
     elif get_platform() == "linux":
         shutil.move(LINUX_EXE_PATH, BUNDLE_ROOT_FOLDER_TEMP_NAME)
 

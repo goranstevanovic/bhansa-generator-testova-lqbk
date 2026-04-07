@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.0.1] - 2026-04-07
+
+### Ispravljeno
+
+- Kreiranje Windows verzije programa
+
 ## [1.0.0] - 2026-04-07
 
 ### Dodato

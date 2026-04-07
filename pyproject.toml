@@ -1,6 +1,6 @@
 [project]
 name = "generator-testova"
-version = "1.0.0"
+version = "1.0.1"
 description = "Generator testova"
 requires-python = ">=3.10"
 dependencies = [
