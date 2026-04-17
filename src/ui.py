@@ -68,5 +68,21 @@ def print_test_generation_done(generated_tests: list[Path]) -> None:
         print(f"  - {file_name}")
 
 
+def print_test_generation_not_done(not_generated_tests: list) -> None:
+    print()
+    print("Testovi nisu generisani za sljedeće oblasti:")
+    for subject in not_generated_tests:
+        abbreviation = subject["abbreviation"].upper()
+        title = subject["title"].capitalize()
+        missing_questions_list = subject["non_available_questions"]
+
+        # Convert question numbers from strings to numbers, so they can be joined
+        missing_questions_list = [str(number) for number in missing_questions_list]
+        missing_questions_str = ", ".join(missing_questions_list)
+
+        print(f"- {abbreviation} {title}")
+        print(f"  Pitanja koja nedostaju u bazi: {missing_questions_str}")
+
+
 def wait_for_exit() -> None:
     input("\nPritisnite Enter za izlaz iz programa...")
