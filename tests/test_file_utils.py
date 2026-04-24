@@ -5,14 +5,15 @@ from unittest.mock import patch
 
 import pytest
 
-from file_utils import check_file_availability, check_questions_availability
+from file_utils import check_file_availability, check_document_availability
 
 FIXTURES_PATH = Path("tests/fixtures")
 SAMPLE_QUESTIONS_PATH = FIXTURES_PATH / "baza" / "pitanja"
+SAMPLE_ANSWERS_PATH = FIXTURES_PATH / "baza" / "odgovori"
 
 
 @pytest.fixture
-def sample_subjects_all_questions_available():
+def sample_subjects_all_documents_available():
     return [
         {
             "abbreviation": "npo",
@@ -32,7 +33,7 @@ def sample_subjects_all_questions_available():
 
 
 @pytest.fixture
-def sample_subjects_all_questions_not_available():
+def sample_subjects_all_documents_not_available():
     return [
         {
             "abbreviation": "npo",
@@ -76,6 +77,31 @@ def sample_subjects_all_questions_not_available_expected_result():
     )
 
 
+@pytest.fixture
+def sample_subjects_all_answers_not_available_expected_result():
+    return (
+        [
+            {
+                "abbreviation": "npo",
+                "title": "naziv prve oblasti",
+                "total_questions": 10,
+                "percentage": 40,
+                "generated_numbers": [1, 4, 7, 10],
+            }
+        ],
+        [
+            {
+                "abbreviation": "ndo",
+                "title": "naziv druge oblasti",
+                "total_questions": 8,
+                "percentage": 50,
+                "generated_numbers": [1, 3, 5, 7, 10, 50, 100],
+                "non_available_answers": [10, 50, 100],
+            },
+        ],
+    )
+
+
 # Tests for check_file_availability()
 class TestCheckFileAvailability:
     @patch("file_utils.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
@@ -93,24 +119,46 @@ class TestCheckFileAvailability:
         assert result.sort() == expected_result.sort()
 
 
-# Tests for check_questions_availability()
-class TestCheckQuestionsAvailability:
+# Tests for check_document_availability()
+class TestCheckDocumentAvailability:
     @patch("file_utils.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
-    def test_all_questions_are_available(self, sample_subjects_all_questions_available):
-        result = check_questions_availability(sample_subjects_all_questions_available)
-        expected_result = (sample_subjects_all_questions_available, [])
+    def test_all_questions_are_available(self, sample_subjects_all_documents_available):
+        result = check_document_availability(sample_subjects_all_documents_available)
+        expected_result = (sample_subjects_all_documents_available, [])
 
         assert result == expected_result
 
     @patch("file_utils.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
     def test_all_questions_are_not_available(
         self,
-        sample_subjects_all_questions_not_available,
+        sample_subjects_all_documents_not_available,
         sample_subjects_all_questions_not_available_expected_result,
     ):
-        result = check_questions_availability(
-            sample_subjects_all_questions_not_available
+        result = check_document_availability(
+            sample_subjects_all_documents_not_available
         )
         expected_result = sample_subjects_all_questions_not_available_expected_result
+
+        assert result == expected_result
+
+    @patch("file_utils.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_all_answers_are_available(self, sample_subjects_all_documents_available):
+        result = check_document_availability(
+            sample_subjects_all_documents_available, True
+        )
+        expected_result = (sample_subjects_all_documents_available, [])
+
+        assert result == expected_result
+
+    @patch("file_utils.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_all_answers_are_not_available(
+        self,
+        sample_subjects_all_documents_not_available,
+        sample_subjects_all_answers_not_available_expected_result,
+    ):
+        result = check_document_availability(
+            sample_subjects_all_documents_not_available, True
+        )
+        expected_result = sample_subjects_all_answers_not_available_expected_result
 
         assert result == expected_result

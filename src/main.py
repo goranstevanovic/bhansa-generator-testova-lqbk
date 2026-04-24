@@ -12,19 +12,19 @@ from config import (
     GENERATED_NUMBERS_RANGE,
 )
 from reader import load_employee_data, load_all_subject_data
-from writer import generate_all_tests
+from writer import generate_documents_for_all_subjects
 from ui import (
     print_title,
     print_candidate_info,
     print_assessor_info,
     print_subjects_summary,
-    print_test_generation_done,
-    print_test_generation_not_done,
+    print_document_generation_done,
+    print_document_generation_not_done,
     wait_for_exit,
 )
 from file_utils import (
     delete_tmp_folder,
-    check_questions_availability,
+    check_document_availability,
 )
 
 
@@ -53,17 +53,39 @@ def main() -> None:
 
     # Check which subjects have all selected questions available, and which do not
     subjects_with_all_questions, subjects_without_all_questions = (
-        check_questions_availability(subjects)
+        check_document_availability(subjects)
+    )
+
+    # Check which subjects have answers for all selected questions available, and which do not
+    subjects_with_all_answers, subjects_without_all_answers = (
+        check_document_availability(subjects, True)
     )
 
     # Generate tests
-    generated_tests = generate_all_tests(subjects_with_all_questions, candidate)
+    generated_tests = generate_documents_for_all_subjects(
+        subjects_with_all_questions, candidate
+    )
 
-    print_test_generation_done(generated_tests)
+    print_document_generation_done(generated_tests)
 
     # List subjects without all necessary question files, if applicable
     if subjects_without_all_questions:
-        print_test_generation_not_done(subjects_without_all_questions)
+        print_document_generation_not_done(subjects_without_all_questions)
+
+    # Generate test answers
+    generated_test_answers = generate_documents_for_all_subjects(
+        subjects_with_all_answers, candidate, True
+    )
+
+    print()
+
+    # If at least one test answers document was generated, show information about that
+    if generated_test_answers:
+        print_document_generation_done(generated_test_answers, True)
+
+        # List subjects without answer files for all necessary question files, if applicable
+        if subjects_without_all_answers:
+            print_document_generation_not_done(subjects_without_all_answers, True)
 
     # Delete temporay folder
     delete_tmp_folder()

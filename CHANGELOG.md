@@ -1,5 +1,13 @@
 # Istorija izmijena
 
+## [1.2.0] - 2026-04-24
+
+### Dodato
+
+- Automatsko generisanje Word dokumenata sa odgovorima na pitanja, ukoliko su u bazi dostupni odgovori
+- Ukoliko nisu dostupni odgovori na sva potrebna pitanja, dokument sa odgovorima za tu oblast se ne generiše
+- Prikazivanje oblasti za koje nisu dostupni odgovori na sva pitanja, kao i lista pitanja za koja nedostaju odgovori
+
 ## [1.1.0] - 2026-04-17
 
 ### Dodato

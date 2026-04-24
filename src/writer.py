@@ -8,14 +8,18 @@ from config import (
     OUTPUT_PATH,
     TEMPORARY_PATH,
     QUESTIONS_PATH,
+    ANSWERS_PATH,
     COVER_TEMPLATE,
+    COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
     TEMPLATE_ABBREVIATION_STRING,
 )
 from models import EmployeeData, SubjectData
 
 
-def create_output_document_path(subject: SubjectData, employee: EmployeeData) -> Path:
+def create_output_document_path(
+    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+) -> Path:
     """Create a file path for a test document."""
     subject_abbrev = subject["abbreviation"]
     employee_name = employee["name"]
@@ -24,14 +28,23 @@ def create_output_document_path(subject: SubjectData, employee: EmployeeData) ->
     folder_path = OUTPUT_PATH / f"{employee_name} {employee_license}"
     folder_path.mkdir(parents=True, exist_ok=True)
 
-    file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}.docx"
+    file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
+
+    if is_answers_document:
+        file_name += " odgovori"
+
+    file_name += ".docx"
 
     return folder_path / file_name
 
 
-def create_cover_page(subject: SubjectData) -> Path:
+def create_cover_page(subject: SubjectData, is_answers_document: bool = False) -> Path:
     """Create cover page and return temporary file path."""
-    cover_page = DocxTemplate(COVER_TEMPLATE)
+    if is_answers_document:
+        cover_page = DocxTemplate(COVER_TEMPLATE_ANSWERS)
+    else:
+        cover_page = DocxTemplate(COVER_TEMPLATE)
+
     context = {
         TEMPLATE_TITLE_STRING: subject["title"],
         TEMPLATE_ABBREVIATION_STRING: subject["abbreviation"],
@@ -45,70 +58,95 @@ def create_cover_page(subject: SubjectData) -> Path:
     return temp_file
 
 
-def generate_test_for_subject(subject: SubjectData, employee: EmployeeData) -> Path:
-    """Merge cover page with selected question files."""
+def generate_document_for_subject(
+    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+) -> Path:
+    """Merge cover page with selected question or answer files."""
     subject_abbrev = subject["abbreviation"]
 
-    # Get output test file path
-    output_file_path = create_output_document_path(subject, employee)
+    # Get output document file path
+    if is_answers_document:
+        output_file_path = create_output_document_path(subject, employee, True)
+    else:
+        output_file_path = create_output_document_path(subject, employee)
 
     # Create cover page
-    cover_page_path = create_cover_page(subject)
+    if is_answers_document:
+        cover_page_path = create_cover_page(subject, True)
+    else:
+        cover_page_path = create_cover_page(subject)
 
-    # Create question file names from generated numbers
+    # Create file names from generated numbers
     question_numbers = subject["generated_numbers"]
-    question_files = [
-        f"{QUESTIONS_PATH}/{subject_abbrev}/{number}.docx"
-        for number in question_numbers
-    ]
 
-    # Create test document
-    test_document = Document()
-    test_document.LoadFromFile(str(cover_page_path))
+    # File names for answers
+    if is_answers_document:
+        files = [
+            f"{ANSWERS_PATH}/{subject_abbrev}/{number}.docx"
+            for number in question_numbers
+        ]
+    # File names for questions
+    else:
+        files = [
+            f"{QUESTIONS_PATH}/{subject_abbrev}/{number}.docx"
+            for number in question_numbers
+        ]
 
-    # Merge question files
-    for i, question_file in enumerate(question_files):
-        # Load a question
-        question = Document()
-        question.LoadFromFile(str(question_file))
+    # Create subject document (containing either questions or answers)
+    subject_document = Document()
+    subject_document.LoadFromFile(str(cover_page_path))
 
-        # Get the last section of the test file and
-        # add question after it
-        lastSection = test_document.Sections.get_Item(test_document.Sections.Count - 1)
+    # Merge individual documents (questions or answers)
+    for i, file in enumerate(files):
+        # Load a question or an answer document
+        single_document = Document()
+        single_document.LoadFromFile(str(file))
 
-        for j in range(question.Sections.Count):
-            section = question.Sections.get_Item(j)
+        # Get the last section of the subject document and
+        # add question or answer after it
+        lastSection = subject_document.Sections.get_Item(
+            subject_document.Sections.Count - 1
+        )
+
+        for j in range(single_document.Sections.Count):
+            section = single_document.Sections.get_Item(j)
 
             for k in range(section.Body.ChildObjects.Count):
                 obj = section.Body.ChildObjects.get_Item(k)
 
-                # Add question number at the beginning
+                # Add question or answer number at the beginning
                 if k == 0:
                     obj.Text = f"{i+1}. {obj.Text}"
                 lastSection.Body.ChildObjects.Add(obj.Clone())
 
-        question.Close()
+        single_document.Close()
 
     # Save file compatible with Word 2016
-    test_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
-    test_document.Close()
+    subject_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
+    subject_document.Close()
 
     # Delete watermark from the top of the document generated by Spire.Doc
-    test_document = Doc(str(output_file_path))
-    test_document.paragraphs[0].clear()
-    test_document.save(output_file_path)
+    subject_document = Doc(str(output_file_path))
+    subject_document.paragraphs[0].clear()
+    subject_document.save(output_file_path)
 
     return output_file_path
 
 
-def generate_all_tests(
-    subjects: list[SubjectData], employee: EmployeeData
+def generate_documents_for_all_subjects(
+    subjects: list[SubjectData],
+    employee: EmployeeData,
+    is_answers_document: bool = False,
 ) -> list[Path]:
-    """Generate tests for all subjects and return list of output file paths."""
+    """Generate tests or test answers for all subjects and return list of output file paths."""
     output_paths: list[Path] = []
 
     for subject in subjects:
-        output_path = generate_test_for_subject(subject, employee)
+        if is_answers_document:
+            output_path = generate_document_for_subject(subject, employee, True)
+        else:
+            output_path = generate_document_for_subject(subject, employee)
+
         output_paths.append(output_path)
 
     return output_paths

@@ -53,35 +53,57 @@ def print_subjects_summary(subjects: list[SubjectData]) -> None:
         print()
 
 
-def print_test_generation_done(generated_tests: list[Path]) -> None:
-    normalized_path = os.path.normpath(generated_tests[0])
+def print_document_generation_done(
+    generated_documents: list[Path], is_answers_documents: bool = False
+) -> None:
+    normalized_path = os.path.normpath(generated_documents[0])
     output_folder, candidate_folder, _ = normalized_path.split(os.sep)
 
-    print("Testovi su generisani.")
-    print()
-    print(f"Testovi su sačuvani u folderu '{output_folder}' / '{candidate_folder}'")
+    if is_answers_documents:
+        print("Odgovori su generisani.")
+        print(
+            f"Odgovori su sačuvani u folderu '{output_folder}' / '{candidate_folder}'"
+        )
+    else:
+        print("Testovi su generisani.")
+        print(f"Testovi su sačuvani u folderu '{output_folder}' / '{candidate_folder}'")
 
-    for test in generated_tests:
-        normalized_path = os.path.normpath(test)
+    for document in generated_documents:
+        normalized_path = os.path.normpath(document)
         file_name = normalized_path.split(os.sep)[2]
 
         print(f"  - {file_name}")
 
 
-def print_test_generation_not_done(not_generated_tests: list) -> None:
-    print()
-    print("Testovi nisu generisani za sljedeće oblasti:")
-    for subject in not_generated_tests:
-        abbreviation = subject["abbreviation"].upper()
-        title = subject["title"].capitalize()
-        missing_questions_list = subject["non_available_questions"]
+def print_document_generation_not_done(
+    not_generated_documents: list, is_answers_documents: bool = False
+) -> None:
+    if is_answers_documents:
+        print()
+        print("Odgovori nisu generisani za sljedeće oblasti:")
+    else:
+        print()
+        print("Testovi nisu generisani za sljedeće oblasti:")
 
-        # Convert question numbers from strings to numbers, so they can be joined
-        missing_questions_list = [str(number) for number in missing_questions_list]
-        missing_questions_str = ", ".join(missing_questions_list)
+    for document in not_generated_documents:
+        abbreviation = document["abbreviation"].upper()
+        title = document["title"].capitalize()
+
+        if is_answers_documents:
+            missing_documents_list = document["non_available_answers"]
+        else:
+            missing_documents_list = document["non_available_questions"]
+
+        # Convert question/answer numbers from strings to numbers, so they can be joined
+        missing_documents_list = [str(number) for number in missing_documents_list]
+        missing_documents_str = ", ".join(missing_documents_list)
 
         print(f"- {abbreviation} {title}")
-        print(f"  Pitanja koja nedostaju u bazi: {missing_questions_str}")
+
+        if is_answers_documents:
+            print(f"  Odgovori koji nedostaju u bazi: {missing_documents_str}")
+        else:
+            print(f"  Pitanja koja nedostaju u bazi: {missing_documents_str}")
 
 
 def wait_for_exit() -> None:

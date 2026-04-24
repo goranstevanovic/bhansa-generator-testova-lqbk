@@ -108,8 +108,10 @@
           >.xlsm</i
         >
         fajl) i na osnovu tih podataka kreira poseban Word dokument sa odabranim
-        pitanjima za svaku oblast. Svi dokumenti za jednog kandidata su sačuvani
-        u folderu sa imenom tog kandidata.
+        pitanjima za svaku oblast. Ukoliko su dostupni odgovori na pitanja,
+        kreira i Word dokument sa odgovorima na odabrana pitanja za svaku
+        oblast. Svi dokumenti za jednog kandidata su sačuvani u folderu sa
+        imenom tog kandidata.
       </p>
     </section>
 
@@ -151,6 +153,21 @@
           pitanja. Npr.
           <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, itd.
         </li>
+        <li>
+          <i>(Opcionalno)</i> Folder <code>odgovori</code> u folderu
+          <code>baza</code> sadrži foldere za svaku oblast iz Excel formulara.
+          Nazivi ovih foldera trebaju biti isti kao i skraćenice oblasti u
+          zagradama, kako je upisano u Excel formularu. Npr. za predmet
+          <i>Lokalni postupci i izvori informacija</i> skraćenica u zagradama je
+          <i>LPI</i>. Naziv foldera treba bit <code>lpi</code>.
+        </li>
+        <li>
+          <i>(Opcionalno)</i> Folder za svaku oblast sadrži količinu odgovora
+          koja odgovara navedenom broju ukupnog broja pitanja u Excel formularu.
+          Svaki odgovor je sačuvan u posebnom Word dokumentu. Naziv fajla
+          odgovara broju pitanja na koji se odgovor odnosi. Npr.
+          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, itd.
+        </li>
       </ul>
     </section>
 
@@ -162,11 +179,16 @@
         </li>
         <li>
           Program će prikazati informacije o kandidatu, procjenjivaču, oblastima
-          i generisanim testovima.
+          i generisanim testovima i odgovorima.
         </li>
         <li>
           Ukoliko za neke oblasti nisu dostupna sva potrebna pitanja u bazi,
           biće prikazane te oblasti, kao i lista pitanja koja nedostaju.
+        </li>
+        <li>
+          Ukoliko za neke oblasti nisu dostupni svi odgovori na potrebna pitanja
+          u bazi, biće prikazane te oblasti, kao i lista pitanja za koja
+          nedostaju odgovori.
         </li>
         <li>Pritisnite <b>Enter</b> da zatvorite program.</li>
       </ol>
@@ -178,8 +200,8 @@
 
     <footer>
       <hr />
-      <p>Verzija: 1.1.0</p>
-      <p>Datum: 2026-04-17</p>
+      <p>Verzija: 1.2.0</p>
+      <p>Datum: 2026-04-24</p>
     </footer>
   </body>
 </html>

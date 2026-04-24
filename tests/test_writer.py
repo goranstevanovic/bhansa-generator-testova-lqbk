@@ -9,15 +9,19 @@ from docx import Document
 from writer import (
     create_output_document_path,
     create_cover_page,
-    generate_test_for_subject,
-    generate_all_tests,
+    generate_document_for_subject,
+    generate_documents_for_all_subjects,
 )
 
 FIXTURES_PATH = Path("tests/fixtures")
 SAMPLE_QUESTIONS_PATH = FIXTURES_PATH / "baza" / "pitanja"
+SAMPLE_ANSWERS_PATH = FIXTURES_PATH / "baza" / "odgovori"
 SAMPLE_OUTPUT_PATH = FIXTURES_PATH / "output"
 SAMPLE_TEMPORARY_PATH = FIXTURES_PATH / "tmp"
 SAMPLE_COVER_TEMPLATE = FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna.docx"
+SAMPLE_COVER_TEMPLATE_ANSWERS = (
+    FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna-odgovori.docx"
+)
 SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
@@ -81,6 +85,23 @@ def sample_questions():
     }
 
 
+# Sample answers
+@pytest.fixture
+def sample_answers():
+    return {
+        "odgovor1": "1. Naziv prve oblasti: Prvo pitanje - odgovor",
+        "odgovor2": "Naziv prve oblasti: Drugo pitanje - odgovor",
+        "odgovor3": "Naziv prve oblasti: Treće pitanje - odgovor",
+        "odgovor4": "2. Naziv prve oblasti: Četvrto pitanje - odgovor",
+        "odgovor5": "Naziv prve oblasti: Peto pitanje - odgovor",
+        "odgovor6": "Naziv prve oblasti: Šesto pitanje - odgovor",
+        "odgovor7": "3. Naziv prve oblasti: Sedmo pitanje - odgovor",
+        "odgovor8": "Naziv prve oblasti: Osmo pitanje - odgovor",
+        "odgovor9": "Naziv prve oblasti: Deveto pitanje - odgovor",
+        "odgovor10": "4. Naziv prve oblasti: Deseto pitanje - odgovor",
+    }
+
+
 # Tests for create_output_document_path()
 class TestCreateOutputDocumentPath:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
@@ -121,7 +142,7 @@ class TestCreateCoverPage:
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
-    def test_cover_page_contains_correct_text(self, sample_subject):
+    def test_cover_page_for_tests_contains_correct_text(self, sample_subject):
         result = create_cover_page(sample_subject)
 
         # Open created document
@@ -133,23 +154,51 @@ class TestCreateCoverPage:
         # Assert text is present
         assert "naziv prve oblasti" in full_text
         assert "npo" in full_text
+        assert "odgovori" not in full_text
+
+    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    def test_cover_page_for_test_answers_contains_correct_text(self, sample_subject):
+        result = create_cover_page(sample_subject, True)
+
+        # Open created document
+        doc = Document(result)
+
+        # Get all text from document
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+
+        # Assert text is present
+        assert "naziv prve oblasti" in full_text
+        assert "npo" in full_text
+        assert "odgovori" in full_text
 
 
-# Tests for generate_test_for_subject()
-class TestGenerateTestForSubject:
+# Tests for generate_document_for_subject()
+class TestGenerateDocumentForSubject:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
+    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
-    def test_generates_test_file_for_single_subject(
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_generates_test_and_test_answers_files_for_single_subject(
         self, sample_subject, sample_employee
     ):
-        result = generate_test_for_subject(sample_subject, sample_employee)
+        result_questions = generate_document_for_subject(
+            sample_subject, sample_employee
+        )
+        result_answers = generate_document_for_subject(
+            sample_subject, sample_employee, True
+        )
 
-        assert result.exists()
-        assert result.suffix == ".docx"
+        assert result_questions.exists()
+        assert result_questions.suffix == ".docx"
+        assert result_answers.exists()
+        assert result_questions.suffix == ".docx"
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
@@ -160,7 +209,7 @@ class TestGenerateTestForSubject:
     def test_generated_test_file_contains_selected_questions(
         self, sample_subject, sample_employee, sample_questions
     ):
-        result = generate_test_for_subject(sample_subject, sample_employee)
+        result = generate_document_for_subject(sample_subject, sample_employee)
 
         # Open created document
         doc = Document(result)
@@ -182,9 +231,40 @@ class TestGenerateTestForSubject:
         assert sample_questions["pitanje8"] not in full_text
         assert sample_questions["pitanje9"] not in full_text
 
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_generated_test_answers_file_contains_selected_questions(
+        self, sample_subject, sample_employee, sample_answers
+    ):
+        result = generate_document_for_subject(sample_subject, sample_employee, True)
 
-# Tests for generate_all_tests()
-class TestGenerateAllTests:
+        # Open created document
+        doc = Document(result)
+
+        # Get all text from documents
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+
+        # Assert selcted questions are in document
+        assert sample_answers["odgovor4"] in full_text
+        assert sample_answers["odgovor1"] in full_text
+        assert sample_answers["odgovor7"] in full_text
+        assert sample_answers["odgovor10"] in full_text
+
+        # Assert non-selected questions are not in document
+        assert sample_answers["odgovor2"] not in full_text
+        assert sample_answers["odgovor3"] not in full_text
+        assert sample_answers["odgovor5"] not in full_text
+        assert sample_answers["odgovor6"] not in full_text
+        assert sample_answers["odgovor8"] not in full_text
+        assert sample_answers["odgovor9"] not in full_text
+
+
+# Tests for generate_documents_for_all_subjects()
+class TestDocumentsForAllSubjects:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
@@ -196,7 +276,23 @@ class TestGenerateAllTests:
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
-        results = generate_all_tests(subjects, sample_employee)
+        results = generate_documents_for_all_subjects(subjects, sample_employee)
+
+        assert len(results) == 3
+        assert all(res.exists() for res in results)
+
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_generates_test_answers_files_for_all_subjects(
+        self, sample_subject, sample_subject_2, sample_subject_3, sample_employee
+    ):
+        subjects = [sample_subject, sample_subject_2, sample_subject_3]
+
+        results = generate_documents_for_all_subjects(subjects, sample_employee, True)
 
         assert len(results) == 3
         assert all(res.exists() for res in results)

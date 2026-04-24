@@ -21,11 +21,13 @@ GENERATED_NUMBERS_RANGE = "F10:F29"
 # Folder paths
 BASE_PATH = Path("baza")
 QUESTIONS_PATH = BASE_PATH / "pitanja"
+ANSWERS_PATH = BASE_PATH / "odgovori"
 TEMPLATES_PATH = BASE_PATH / "predlosci"
 OUTPUT_PATH = Path("generisani-testovi")
 TEMPORARY_PATH = Path("tmp")
 
 # Cover page template file
 COVER_TEMPLATE = TEMPLATES_PATH / "template-naslovna.docx"
+COVER_TEMPLATE_ANSWERS = TEMPLATES_PATH / "template-naslovna-odgovori.docx"
 TEMPLATE_TITLE_STRING = "naziv"
 TEMPLATE_ABBREVIATION_STRING = "skracenica"
