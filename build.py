@@ -40,17 +40,21 @@ FOLDERS_QUESTIONS = [
     "baza/pitanja/ass",
     "baza/pitanja/emr",
     "baza/pitanja/eqp",
+    "baza/pitanja/hr",
     "baza/pitanja/lgc",
     "baza/pitanja/lnf",
     "baza/pitanja/lpi",
+    "baza/pitanja/proc",
 ]
 FOLDERS_ANSWERS = [
     "baza/odgovori/ass",
     "baza/odgovori/emr",
     "baza/odgovori/eqp",
+    "baza/odgovori/hr",
     "baza/odgovori/lgc",
     "baza/odgovori/lnf",
     "baza/odgovori/lpi",
+    "baza/odgovori/proc",
 ]
 FOLDERS_GENERATED_TESTS = ["generisani-testovi"]
 
