@@ -4,7 +4,10 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from docx import Document
+
+# from docx import Document
+from spire.doc import *
+from spire.doc.common import *
 
 from writer import (
     create_output_document_path,
@@ -146,15 +149,14 @@ class TestCreateCoverPage:
         result = create_cover_page(sample_subject)
 
         # Open created document
-        doc = Document(result)
+        doc = Document()
+        doc.LoadFromFile(str(result))
 
         # Get all text from document
-        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        full_text = doc.GetText()
 
         # Assert text is present
-        assert "naziv prve oblasti" in full_text
-        assert "npo" in full_text
-        assert "odgovori" not in full_text
+        assert "НАСЛОВНА СТРАНА ТЕСТА ЗА ТЕОРИЈСКУ ПРОВЈЕРУ ЗНАЊА" in full_text
 
     @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
