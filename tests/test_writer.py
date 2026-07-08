@@ -22,6 +22,7 @@ SAMPLE_COVER_TEMPLATE = FIXTURES_PATH / "baza" / "predlosci" / "template-naslovn
 SAMPLE_COVER_TEMPLATE_ANSWERS = (
     FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna-odgovori.docx"
 )
+SAMPLE_COVER_PAGE = SAMPLE_COVER_TEMPLATE
 SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
@@ -138,6 +139,7 @@ class TestCreateCoverPage:
         assert result.exists()
         assert result.suffix == ".docx"
 
+    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
     @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
