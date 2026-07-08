@@ -150,10 +150,11 @@ class TestCreateCoverPage:
         result = create_cover_page(sample_subject)
 
         # Open created document
-        doc = Document(result)
+        doc = Document()
+        doc.LoadFromFile(str(result))
 
         # Get all text from document
-        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        full_text = doc.GetText().lower()
 
         # Assert text is present
         assert "naziv prve oblasti" in full_text
