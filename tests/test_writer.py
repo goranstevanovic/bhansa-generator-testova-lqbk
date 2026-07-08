@@ -131,7 +131,6 @@ class TestCreateOutputDocumentPath:
 # Tests for create_cover_page()
 class TestCreateCoverPage:
     @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -142,7 +141,6 @@ class TestCreateCoverPage:
         assert result.suffix == ".docx"
 
     @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
