@@ -4,8 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from spire.doc import *
-from spire.doc.common import *
+from docx import Document
 
 from writer import (
     create_output_document_path,
@@ -73,16 +72,16 @@ def sample_subject_3():
 @pytest.fixture
 def sample_questions():
     return {
-        "pitanje1": "Naziv prve oblasti: Prvo pitanje",
+        "pitanje1": "1. Naziv prve oblasti: Prvo pitanje",
         "pitanje2": "Naziv prve oblasti: Drugo pitanje",
         "pitanje3": "Naziv prve oblasti: Treće pitanje",
-        "pitanje4": "Naziv prve oblasti: Četvrto pitanje",
+        "pitanje4": "2. Naziv prve oblasti: Četvrto pitanje",
         "pitanje5": "Naziv prve oblasti: Peto pitanje",
         "pitanje6": "Naziv prve oblasti: Šesto pitanje",
-        "pitanje7": "Naziv prve oblasti: Sedmo pitanje",
+        "pitanje7": "3. Naziv prve oblasti: Sedmo pitanje",
         "pitanje8": "Naziv prve oblasti: Osmo pitanje",
         "pitanje9": "Naziv prve oblasti: Deveto pitanje",
-        "pitanje10": "Naziv prve oblasti: Deseto pitanje",
+        "pitanje10": "4. Naziv prve oblasti: Deseto pitanje",
     }
 
 
@@ -90,16 +89,16 @@ def sample_questions():
 @pytest.fixture
 def sample_answers():
     return {
-        "odgovor1": "Naziv prve oblasti: Prvo pitanje - odgovor",
+        "odgovor1": "1. Naziv prve oblasti: Prvo pitanje - odgovor",
         "odgovor2": "Naziv prve oblasti: Drugo pitanje - odgovor",
         "odgovor3": "Naziv prve oblasti: Treće pitanje - odgovor",
-        "odgovor4": "Naziv prve oblasti: Četvrto pitanje - odgovor",
+        "odgovor4": "2. Naziv prve oblasti: Četvrto pitanje - odgovor",
         "odgovor5": "Naziv prve oblasti: Peto pitanje - odgovor",
         "odgovor6": "Naziv prve oblasti: Šesto pitanje - odgovor",
-        "odgovor7": "Naziv prve oblasti: Sedmo pitanje - odgovor",
+        "odgovor7": "3. Naziv prve oblasti: Sedmo pitanje - odgovor",
         "odgovor8": "Naziv prve oblasti: Osmo pitanje - odgovor",
         "odgovor9": "Naziv prve oblasti: Deveto pitanje - odgovor",
-        "odgovor10": "Naziv prve oblasti: Deseto pitanje - odgovor",
+        "odgovor10": "4. Naziv prve oblasti: Deseto pitanje - odgovor",
     }
 
 
@@ -147,14 +146,15 @@ class TestCreateCoverPage:
         result = create_cover_page(sample_subject)
 
         # Open created document
-        doc = Document()
-        doc.LoadFromFile(str(result))
+        doc = Document(result)
 
         # Get all text from document
-        full_text = doc.GetText()
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
 
         # Assert text is present
-        assert "НАСЛОВНА СТРАНА ТЕСТА ЗА ТЕОРИЈСКУ ПРОВЈЕРУ ЗНАЊА" in full_text
+        assert "naziv prve oblasti" in full_text
+        assert "npo" in full_text
+        assert "odgovori" not in full_text
 
     @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
@@ -164,11 +164,10 @@ class TestCreateCoverPage:
         result = create_cover_page(sample_subject, True)
 
         # Open created document
-        doc = Document()
-        doc.LoadFromFile(str(result))
+        doc = Document(result)
 
         # Get all text from document
-        full_text = doc.GetText().lower()
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
 
         # Assert text is present
         assert "naziv prve oblasti" in full_text
@@ -213,11 +212,10 @@ class TestGenerateDocumentForSubject:
         result = generate_document_for_subject(sample_subject, sample_employee)
 
         # Open created document
-        doc = Document()
-        doc.LoadFromFile(str(result))
+        doc = Document(result)
 
         # Get all text from documents
-        full_text = doc.GetText()
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
 
         # Assert selcted questions are in document
         assert sample_questions["pitanje4"] in full_text
@@ -245,11 +243,10 @@ class TestGenerateDocumentForSubject:
         result = generate_document_for_subject(sample_subject, sample_employee, True)
 
         # Open created document
-        doc = Document()
-        doc.LoadFromFile(str(result))
+        doc = Document(result)
 
         # Get all text from documents
-        full_text = doc.GetText()
+        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
 
         # Assert selcted questions are in document
         assert sample_answers["odgovor4"] in full_text
