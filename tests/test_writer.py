@@ -247,10 +247,11 @@ class TestGenerateDocumentForSubject:
         result = generate_document_for_subject(sample_subject, sample_employee, True)
 
         # Open created document
-        doc = Document(result)
+        doc = Document()
+        doc.LoadFromFile(str(result))
 
         # Get all text from documents
-        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        full_text = doc.GetText()
 
         # Assert selcted questions are in document
         assert sample_answers["odgovor4"] in full_text
