@@ -4,7 +4,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from docx import Document
 from spire.doc import *
 from spire.doc.common import *
 
