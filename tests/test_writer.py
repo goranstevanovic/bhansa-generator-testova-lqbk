@@ -24,7 +24,7 @@ SAMPLE_COVER_TEMPLATE = FIXTURES_PATH / "baza" / "predlosci" / "template-naslovn
 SAMPLE_COVER_TEMPLATE_ANSWERS = (
     FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna-odgovori.docx"
 )
-SAMPLE_COVER_PAGE = SAMPLE_COVER_TEMPLATE
+SAMPLE_COVER_PAGE = FIXTURES_PATH / "baza" / "predlosci" / "naslovna.docx"
 SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
