@@ -5,6 +5,8 @@ from unittest.mock import patch
 
 import pytest
 from docx import Document
+from spire.doc import *
+from spire.doc.common import *
 
 from writer import (
     create_output_document_path,
@@ -73,16 +75,16 @@ def sample_subject_3():
 @pytest.fixture
 def sample_questions():
     return {
-        "pitanje1": "1. Naziv prve oblasti: Prvo pitanje",
+        "pitanje1": "Naziv prve oblasti: Prvo pitanje",
         "pitanje2": "Naziv prve oblasti: Drugo pitanje",
         "pitanje3": "Naziv prve oblasti: Treće pitanje",
-        "pitanje4": "2. Naziv prve oblasti: Četvrto pitanje",
+        "pitanje4": "Naziv prve oblasti: Četvrto pitanje",
         "pitanje5": "Naziv prve oblasti: Peto pitanje",
         "pitanje6": "Naziv prve oblasti: Šesto pitanje",
-        "pitanje7": "3. Naziv prve oblasti: Sedmo pitanje",
+        "pitanje7": "Naziv prve oblasti: Sedmo pitanje",
         "pitanje8": "Naziv prve oblasti: Osmo pitanje",
         "pitanje9": "Naziv prve oblasti: Deveto pitanje",
-        "pitanje10": "4. Naziv prve oblasti: Deseto pitanje",
+        "pitanje10": "Naziv prve oblasti: Deseto pitanje",
     }
 
 
@@ -214,10 +216,11 @@ class TestGenerateDocumentForSubject:
         result = generate_document_for_subject(sample_subject, sample_employee)
 
         # Open created document
-        doc = Document(result)
+        doc = Document()
+        doc.LoadFromFile(str(result))
 
         # Get all text from documents
-        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        full_text = doc.GetText()
 
         # Assert selcted questions are in document
         assert sample_questions["pitanje4"] in full_text
