@@ -92,16 +92,16 @@ def sample_questions():
 @pytest.fixture
 def sample_answers():
     return {
-        "odgovor1": "1. Naziv prve oblasti: Prvo pitanje - odgovor",
+        "odgovor1": "Naziv prve oblasti: Prvo pitanje - odgovor",
         "odgovor2": "Naziv prve oblasti: Drugo pitanje - odgovor",
         "odgovor3": "Naziv prve oblasti: Treće pitanje - odgovor",
-        "odgovor4": "2. Naziv prve oblasti: Četvrto pitanje - odgovor",
+        "odgovor4": "Naziv prve oblasti: Četvrto pitanje - odgovor",
         "odgovor5": "Naziv prve oblasti: Peto pitanje - odgovor",
         "odgovor6": "Naziv prve oblasti: Šesto pitanje - odgovor",
-        "odgovor7": "3. Naziv prve oblasti: Sedmo pitanje - odgovor",
+        "odgovor7": "Naziv prve oblasti: Sedmo pitanje - odgovor",
         "odgovor8": "Naziv prve oblasti: Osmo pitanje - odgovor",
         "odgovor9": "Naziv prve oblasti: Deveto pitanje - odgovor",
-        "odgovor10": "4. Naziv prve oblasti: Deseto pitanje - odgovor",
+        "odgovor10": "Naziv prve oblasti: Deseto pitanje - odgovor",
     }
 
 
@@ -248,10 +248,11 @@ class TestGenerateDocumentForSubject:
         result = generate_document_for_subject(sample_subject, sample_employee, True)
 
         # Open created document
-        doc = Document(result)
+        doc = Document()
+        doc.LoadFromFile(str(result))
 
         # Get all text from documents
-        full_text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        full_text = doc.GetText()
 
         # Assert selcted questions are in document
         assert sample_answers["odgovor4"] in full_text
