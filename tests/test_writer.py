@@ -183,7 +183,6 @@ class TestCreateCoverPage:
 class TestGenerateDocumentForSubject:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
@@ -207,7 +206,6 @@ class TestGenerateDocumentForSubject:
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -275,7 +273,6 @@ class TestGenerateDocumentForSubject:
 class TestDocumentsForAllSubjects:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE", SAMPLE_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
