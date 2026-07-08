@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.3.0] - 2026-07-08
+
+### Izmjenjeno
+
+- Program prilagođen tabelarnom stilu pitanja i odgovora, koji se koristi u JPAKL Banja Luka
+
 ## [1.2.0] - 2026-04-24
 
 ### Dodato

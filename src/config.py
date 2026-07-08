@@ -27,6 +27,7 @@ OUTPUT_PATH = Path("generisani-testovi")
 TEMPORARY_PATH = Path("tmp")
 
 # Cover page template file
+COVER_PAGE = TEMPLATES_PATH / "naslovna.docx"
 COVER_TEMPLATE = TEMPLATES_PATH / "template-naslovna.docx"
 COVER_TEMPLATE_ANSWERS = TEMPLATES_PATH / "template-naslovna-odgovori.docx"
 TEMPLATE_TITLE_STRING = "naziv"

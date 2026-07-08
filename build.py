@@ -14,18 +14,18 @@ import PyInstaller.__main__
 from _version import VERSION
 
 # Base name of the release archive file
-ARCHIVE_BASE_NAME = "bhansa-generator-testova"
+ARCHIVE_BASE_NAME = "bhansa-generator-testova-lqbk"
 
 # Root and base folders used when creating archives
 ARCHIVE_ROOT_FOLDER = Path("dist")
-ARCHIVE_BASE_FODLER = Path("generator-testova")
+ARCHIVE_BASE_FODLER = Path("generator-testova-lqbk")
 
 # File containing version number and date
 VERSION_FILE_PATH = Path("src", "_version.py")
 
 # Bundle folder temporary and final names
-BUNDLE_ROOT_FOLDER_TEMP_NAME = Path("dist", "generator-testova-bundle")
-BUNDLE_ROOT_FOLDER_FINAL_NAME = Path("dist", "generator-testova")
+BUNDLE_ROOT_FOLDER_TEMP_NAME = Path("dist", "generator-testova-lqbk-bundle")
+BUNDLE_ROOT_FOLDER_FINAL_NAME = Path("dist", "generator-testova-lqbk")
 
 # Relases base folder
 RELEASES_BASE_FOLDER = Path("releases")
@@ -40,17 +40,21 @@ FOLDERS_QUESTIONS = [
     "baza/pitanja/ass",
     "baza/pitanja/emr",
     "baza/pitanja/eqp",
+    "baza/pitanja/hr",
     "baza/pitanja/lgc",
     "baza/pitanja/lnf",
     "baza/pitanja/lpi",
+    "baza/pitanja/proc",
 ]
 FOLDERS_ANSWERS = [
     "baza/odgovori/ass",
     "baza/odgovori/emr",
     "baza/odgovori/eqp",
+    "baza/odgovori/hr",
     "baza/odgovori/lgc",
     "baza/odgovori/lnf",
     "baza/odgovori/lpi",
+    "baza/odgovori/proc",
 ]
 FOLDERS_GENERATED_TESTS = ["generisani-testovi"]
 

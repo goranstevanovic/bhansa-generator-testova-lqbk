@@ -9,7 +9,7 @@ from config import (
     TEMPORARY_PATH,
     QUESTIONS_PATH,
     ANSWERS_PATH,
-    COVER_TEMPLATE,
+    COVER_PAGE,
     COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
     TEMPLATE_ABBREVIATION_STRING,
@@ -43,7 +43,7 @@ def create_cover_page(subject: SubjectData, is_answers_document: bool = False) -
     if is_answers_document:
         cover_page = DocxTemplate(COVER_TEMPLATE_ANSWERS)
     else:
-        cover_page = DocxTemplate(COVER_TEMPLATE)
+        cover_page = DocxTemplate(COVER_PAGE)
 
     context = {
         TEMPLATE_TITLE_STRING: subject["title"],
@@ -98,28 +98,8 @@ def generate_document_for_subject(
 
     # Merge individual documents (questions or answers)
     for i, file in enumerate(files):
-        # Load a question or an answer document
-        single_document = Document()
-        single_document.LoadFromFile(str(file))
-
-        # Get the last section of the subject document and
-        # add question or answer after it
-        lastSection = subject_document.Sections.get_Item(
-            subject_document.Sections.Count - 1
-        )
-
-        for j in range(single_document.Sections.Count):
-            section = single_document.Sections.get_Item(j)
-
-            for k in range(section.Body.ChildObjects.Count):
-                obj = section.Body.ChildObjects.get_Item(k)
-
-                # Add question or answer number at the beginning
-                if k == 0:
-                    obj.Text = f"{i+1}. {obj.Text}"
-                lastSection.Body.ChildObjects.Add(obj.Clone())
-
-        single_document.Close()
+        # Append a question or an answer document
+        subject_document.InsertTextFromFile(str(file), FileFormat.Auto)
 
     # Save file compatible with Word 2016
     subject_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)

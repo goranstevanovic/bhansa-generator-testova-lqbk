@@ -117,7 +117,7 @@ def load_generated_numbers(file: Path, cell_range: str) -> list[list[int]]:
     """Load generated question numbers for each subject."""
     workbook = openpyxl.load_workbook(file, data_only=True)
     sheet = workbook.active
-    pattern = re.compile(r"(\d{1,3},\s*)+")
+    pattern = re.compile(r"(\d{1,3},?\s*)+")
 
     if sheet is None:
         return []
