@@ -3,7 +3,7 @@
 from pathlib import Path
 
 # Program information
-PROGRAM_TITLE = "GENERATOR TESTOVA"
+PROGRAM_TITLE = "ГЕНЕРАТОР ТЕСТОВА"
 
 # Question number generator file
 QUESTIONS_GENERATOR = "FORM.xlsm"
