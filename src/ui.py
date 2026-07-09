@@ -44,7 +44,7 @@ def print_subjects_summary(subjects: list[SubjectData]) -> None:
         generated_numbers = ", ".join(str(num) for num in subject["generated_numbers"])
 
         print(f"{i}. {abbrev.upper()}")
-        print(f"   {title.capitalize()}")
+        print(f"   {title}")
         print(f"       Укупан број питања: {total_questions}")
         print(f"       Проценат питања за генерисање: {percentage}%")
         print(f"       Број питања за генерисање: {generated_questions_qty}")

@@ -40,7 +40,7 @@ def _parse_subject_abbreviation(text: str) -> str | None:
 def _parse_subject_title(text: str) -> str:
     """Extract title only from subject title, removing abbreviation."""
     pattern = re.compile(r"\s*\([A-Za-z]{3,}\)$")
-    return pattern.sub("", text).replace("\n", " ").strip().lower()
+    return pattern.sub("", text).replace("\n", " ").strip()
 
 
 def load_employee_data(file: Path, cell: str) -> EmployeeData:
