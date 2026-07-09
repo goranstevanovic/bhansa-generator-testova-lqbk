@@ -31,7 +31,7 @@ def create_output_document_path(
     file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
 
     if is_answers_document:
-        file_name += " odgovori"
+        file_name += " одговори"
 
     file_name += ".docx"
 

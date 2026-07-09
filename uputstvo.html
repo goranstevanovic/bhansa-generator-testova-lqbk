@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="sr-Cyrl-BA">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,112 +96,111 @@
   </head>
   <body>
     <header>
-      <h1>Generator Testova</h1>
-      <p>Uputstvo za upotrebu</p>
+      <h1>Генератор Тестова</h1>
+      <p>Упутство за употребу</p>
     </header>
 
     <section>
-      <h2>Opis</h2>
+      <h2>Опис</h2>
       <p>
-        <i>Generator Testova</i> je program za automatsko generisanje testova za
-        teorijsku provjeru znanja. Učitava podatke iz Excel formulara (<i
+        <i>Генератор Тестова</i> је програм за аутоматско генерисање тестова за
+        теоријску провјеру знања. Учитава податке из Excel формулара (<i
           >.xlsm</i
         >
-        fajl) i na osnovu tih podataka kreira poseban Word dokument sa odabranim
-        pitanjima za svaku oblast. Ukoliko su dostupni odgovori na pitanja,
-        kreira i Word dokument sa odgovorima na odabrana pitanja za svaku
-        oblast. Svi dokumenti za jednog kandidata su sačuvani u folderu sa
-        imenom tog kandidata.
+        фајл) и на основу тих података креира посебан Word документ са одабраним
+        питањима за сваку област. Уколико су доступни одговори на питања, креира
+        и Word документ са одговорима на одабрана питања за сваку област. Сви
+        документи за једног кандидата су сачувани у фолдеру са именом тог
+        кандидата.
       </p>
     </section>
 
     <section>
-      <h2>Priprema</h2>
-      <p>Prije pokretanja programa, provjerite sljedeće:</p>
+      <h2>Припрема</h2>
+      <p>Прије покретања програма, провјерите сљедеће:</p>
       <ul>
         <li>
-          Excel formular je ispravno popunjen i sadrži:
+          Excel формулар је исправно попуњен и садржи:
           <ul>
-            <li>podatke o kontroloru (ćelija B4),</li>
-            <li>podatke o procjenjivaču (ćelija B5),</li>
-            <li>nazive oblasti (ćelije A10&ndash;A29),</li>
-            <li>skraćenice oblasti u zagradama (ćelije A10&ndash;A29),</li>
-            <li>ukupan broj pitanja za svaku oblast (ćelije D10&ndash;D29),</li>
+            <li>податке о контролору (ћелија B4),</li>
+            <li>податке о процјењивачу (ћелија B5),</li>
+            <li>називе области (ћелије A10&ndash;A29),</li>
+            <li>скраћенице области у заградама (ћелије A10&ndash;A29),</li>
+            <li>укупан број питања за сваку област (ћелије D10&ndash;D29),</li>
             <li>
-              procenat pitanja za generisanje za svaku oblast (ćelije
+              проценат питања за генерисање за сваку област (ћелије
               E10&ndash;E29),
             </li>
             <li>
-              generisane brojeve pitanja za svaku oblast koji se dobijaju pomoću
-              dugmeta <b>Osvježi pitanja</b> (ćelije F10&ndash;F29).
+              генерисане бројеве питања за сваку област који се добијају помоћу
+              дугмета <b>Освјежи питања</b> (ћелије F10&ndash;F29).
             </li>
           </ul>
         </li>
-        <li>Excel formular je sačuvan nakon izmijena.</li>
+        <li>Excel формулар је сачуван након измијена.</li>
         <li>
-          Folder <code>pitanja</code> u folderu <code>baza</code> sadrži foldere
-          za svaku oblast iz Excel formulara. Nazivi ovih foldera trebaju biti
-          isti kao i skraćenice oblasti u zagradama, kako je upisano u Excel
-          formularu. Npr. za predmet
-          <i>Lokalni postupci i izvori informacija</i> skraćenica u zagradama je
-          <i>LPI</i>. Naziv foldera treba bit <code>lpi</code>.
+          Фолдер <code>pitanja</code> у фолдеру <code>baza</code> садржи фолдере
+          за сваку област из Excel формулара. Називи ових фолдера требају бити
+          исти као и скраћенице области у заградама, како је уписано у Excel
+          формулару. Нпр. за предмет
+          <i>Локални поступци и извори информација</i> скраћеница у заградама је
+          <i>LPI</i>. Назив фолдера треба бити <code>lpi</code>.
         </li>
         <li>
-          Folder za svaku oblast sadrži količinu pitanja koja odgovara navedenom
-          broju ukupnog broja pitanja u Excel formularu. Svako pitanje je
-          sačuvano u posebnom Word dokumentu. Naziv fajla odgovara broju
-          pitanja. Npr.
-          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, itd.
+          Фолдер за сваку област садржи количину питања која одговара наведеном
+          броју укупног броја питања у Excel формулару. Свако питање је сачувано
+          у посебном Word документу. Назив фајла одговара броју питања. Нпр.
+          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, итд.
         </li>
         <li>
-          <i>(Opcionalno)</i> Folder <code>odgovori</code> u folderu
-          <code>baza</code> sadrži foldere za svaku oblast iz Excel formulara.
-          Nazivi ovih foldera trebaju biti isti kao i skraćenice oblasti u
-          zagradama, kako je upisano u Excel formularu. Npr. za predmet
-          <i>Lokalni postupci i izvori informacija</i> skraćenica u zagradama je
-          <i>LPI</i>. Naziv foldera treba bit <code>lpi</code>.
+          <i>(Опционално)</i> Фолдер <code>odgovori</code> у фолдеру
+          <code>baza</code> садржи фолдере за сваку област из Excel формулара.
+          Називи ових фолдера требају бити исти као и скраћенице области у
+          заградама, како је уписано у Excel формулару. Нпр. за предмет
+          <i>Локални поступци и извори информација</i> скраћеница у заградама је
+          <i>LPI</i>. Назив фолдер треба бити <code>lpi</code>.
         </li>
         <li>
-          <i>(Opcionalno)</i> Folder za svaku oblast sadrži količinu odgovora
-          koja odgovara navedenom broju ukupnog broja pitanja u Excel formularu.
-          Svaki odgovor je sačuvan u posebnom Word dokumentu. Naziv fajla
-          odgovara broju pitanja na koji se odgovor odnosi. Npr.
-          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, itd.
+          <i>(Опционално)</i> Фолдер за сваку област садржи количину одговора
+          која одговара наведеном броју укупног броја питања у Excel формулару.
+          Сваки одговор је сачуван у посебном Word документу. Назив фајла
+          одговара броју питања на који се одговор односи. Нпр.
+          <code>1.docx</code>, <code>2.docx</code>, <code>3.docx</code>, итд.
         </li>
       </ul>
     </section>
 
     <section>
-      <h2>Upotreba</h2>
+      <h2>Употреба</h2>
       <ol>
         <li>
-          Pokrenite program dvoklikom na <code>generator-testova.exe</code>.
+          Покрените програм двокликом на <code>generator-testova.exe</code>.
         </li>
         <li>
-          Program će prikazati informacije o kandidatu, procjenjivaču, oblastima
-          i generisanim testovima i odgovorima.
+          Програм ће приказати информације о кандидату, процјењивачу, областима
+          и генерисаним тестовима и одговорима.
         </li>
         <li>
-          Ukoliko za neke oblasti nisu dostupna sva potrebna pitanja u bazi,
-          biće prikazane te oblasti, kao i lista pitanja koja nedostaju.
+          Уколико за неке области нису доступна сва потребна битања у бази, биће
+          приказане те области, као и листа питања која недостају.
         </li>
         <li>
-          Ukoliko za neke oblasti nisu dostupni svi odgovori na potrebna pitanja
-          u bazi, biće prikazane te oblasti, kao i lista pitanja za koja
-          nedostaju odgovori.
+          Уколико за неке области нису доступни сви одговори на потребна питања
+          у бази, биће приказане те области, као и листа питања за која
+          недостају одговори.
         </li>
-        <li>Pritisnite <b>Enter</b> da zatvorite program.</li>
+        <li>Притисните <b>Enter</b> да затворите програм.</li>
       </ol>
       <p>
-        Generisani testovi će biti sačuvani u folderu
+        Генерисани тестови ће бити сачувани у фолдеру
         <code>generisani-testovi</code>.
       </p>
     </section>
 
     <footer>
       <hr />
-      <p>Verzija: 1.3.0</p>
-      <p>Datum: 2026-07-08</p>
+      <p>Верзија: 1.4.0</p>
+      <p>Датум: 2026-07-09</p>
     </footer>
   </body>
 </html>

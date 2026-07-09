@@ -1,5 +1,9 @@
 # Istorija izmijena
 
+## [1.4.0] - 2026-07-09
+
+- Tekst korisničkog interfejsa programa, poruke u programu i korisničko uputstvo promijenjeni u ćirilicu
+
 ## [1.3.0] - 2026-07-08
 
 ### Izmjenjeno

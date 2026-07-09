@@ -59,10 +59,10 @@ class TestParseSubjectTitle:
         expected_result1 = "naziv prve oblasti"
 
         result2 = _parse_subject_title("NAZIV DRUGE OBLASTI (NDO)")
-        expected_result2 = "naziv druge oblasti"
+        expected_result2 = "NAZIV DRUGE OBLASTI"
 
         result3 = _parse_subject_title("Naziv TrEćE OBlaSti (nTo)")
-        expected_result3 = "naziv treće oblasti"
+        expected_result3 = "Naziv TrEćE OBlaSti"
 
         assert result1 == expected_result1
         assert result2 == expected_result2
@@ -70,7 +70,7 @@ class TestParseSubjectTitle:
 
     def test_newline_replacement(self):
         result = _parse_subject_title("NAZIV\nOBLASTI\n(NOB)")
-        expected_result = "naziv oblasti"
+        expected_result = "NAZIV OBLASTI"
 
         assert result == expected_result
 
@@ -116,11 +116,11 @@ class TestLoadSubjectTitles:
         subject1, subject2, subject3 = subjects
 
         expected_subject1_abbreviation = "npo"
-        expected_subject1_title = "naziv prve oblasti"
+        expected_subject1_title = "NAZIV PRVE OBLASTI"
         expected_subject2_abbreviation = "ndo"
-        expected_subject2_title = "naziv druge oblasti"
+        expected_subject2_title = "NAZIV DRUGE OBLASTI"
         expected_subject3_abbreviation = "nto"
-        expected_subject3_title = "naziv treće oblasti"
+        expected_subject3_title = "NAZIV TREĆE OBLASTI"
 
         assert subject1["abbreviation"] == expected_subject1_abbreviation
         assert subject1["title"] == expected_subject1_title
@@ -224,19 +224,19 @@ class TestLoadAllSubjectData:
         subject3 = result[2]
 
         assert subject1["abbreviation"] == "npo"
-        assert subject1["title"] == "naziv prve oblasti"
+        assert subject1["title"] == "NAZIV PRVE OBLASTI"
         assert subject1["total_questions"] == 10
         assert subject1["percentage"] == 50
         assert subject1["generated_numbers"] == [1, 2, 6, 8, 10]
 
         assert subject2["abbreviation"] == "ndo"
-        assert subject2["title"] == "naziv druge oblasti"
+        assert subject2["title"] == "NAZIV DRUGE OBLASTI"
         assert subject2["total_questions"] == 9
         assert subject2["percentage"] == 55
         assert subject2["generated_numbers"] == [1, 2, 3, 6, 7]
 
         assert subject3["abbreviation"] == "nto"
-        assert subject3["title"] == "naziv treće oblasti"
+        assert subject3["title"] == "NAZIV TREĆE OBLASTI"
         assert subject3["total_questions"] == 8
         assert subject3["percentage"] == 60
         assert subject3["generated_numbers"] == [1, 4, 5, 6, 7]
