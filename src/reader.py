@@ -28,7 +28,7 @@ def _load_cell_value(file: Path, cell: str) -> str:
 
 def _parse_subject_abbreviation(text: str) -> str | None:
     """Extract abbreviation from subject title."""
-    pattern = re.compile(r"\(([A-Za-z]{3,})\)$")
+    pattern = re.compile(r"\(([A-Za-z]{2,})\)$")
     match = pattern.search(text)
 
     if match:
@@ -39,7 +39,7 @@ def _parse_subject_abbreviation(text: str) -> str | None:
 
 def _parse_subject_title(text: str) -> str:
     """Extract title only from subject title, removing abbreviation."""
-    pattern = re.compile(r"\s*\([A-Za-z]{3,}\)$")
+    pattern = re.compile(r"\s*\([A-Za-z]{2,}\)$")
     return pattern.sub("", text).replace("\n", " ").strip()
 
 
