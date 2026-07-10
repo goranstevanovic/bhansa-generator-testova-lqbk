@@ -75,16 +75,32 @@ def create_cover_page_for_subject(
 
 
 def generate_document_for_subject(
-    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+    subject: SubjectData,
+    employee: EmployeeData,
+    is_answers_document: bool = False,
+    is_temporary_file: bool = False,
 ) -> Path:
-    """Merge cover page with selected question or answer files."""
+    """
+    Merge cover page with selected question or answer files.
+    Save it in the output folder, or in the temporary folder.
+    """
     subject_abbrev = subject["abbreviation"]
 
     # Get output document file path
-    if is_answers_document:
-        output_file_path = create_output_document_path(subject, employee, True)
+    if is_temporary_file:
+        if is_answers_document:
+            output_file_path = create_output_document_path(
+                subject, employee, True, True
+            )
+        else:
+            output_file_path = create_output_document_path(
+                subject, employee, False, True
+            )
     else:
-        output_file_path = create_output_document_path(subject, employee)
+        if is_answers_document:
+            output_file_path = create_output_document_path(subject, employee, True)
+        else:
+            output_file_path = create_output_document_path(subject, employee)
 
     # Create cover page
     if is_answers_document:
