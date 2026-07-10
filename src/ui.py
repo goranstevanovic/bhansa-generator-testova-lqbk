@@ -106,5 +106,29 @@ def print_documents_generation_not_done(
             print(f"  Питања која недостају у бази: {missing_documents_str}")
 
 
+def print_document_generation_done(
+    document_path: Path, is_answers_document: bool = False
+) -> None:
+    if document_path is None:
+        if is_answers_document:
+            print("Одговори нису генерисани!!!")
+            return
+        else:
+            print("Тестови нису генерисани!!!")
+            return
+
+    normalized_path = os.path.normpath(document_path)
+    output_folder, candidate_folder, _ = normalized_path.split(os.sep)
+
+    if is_answers_document:
+        print("Одговори су генерисани.")
+        print(
+            f"Одговори су сачувани у фолдеру '{output_folder}' / '{candidate_folder}'"
+        )
+    else:
+        print("Тестови су генерисани.")
+        print(f"Тестови су сачувани у фолдеру '{output_folder}' / '{candidate_folder}'")
+
+
 def wait_for_exit() -> None:
     input("\nПритисните Ентер за излаз из програма...")

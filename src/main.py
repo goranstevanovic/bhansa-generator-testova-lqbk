@@ -23,6 +23,7 @@ from ui import (
     print_subjects_summary,
     print_documents_generation_done,
     print_documents_generation_not_done,
+    print_document_generation_done,
     wait_for_exit,
 )
 from file_utils import (
@@ -69,6 +70,8 @@ def main() -> None:
         subjects_with_all_questions, candidate, False
     )
 
+    print_document_generation_done(generated_questions_document)
+
     # List subjects without all necessary question files, if applicable
     if subjects_without_all_questions:
         print_documents_generation_not_done(subjects_without_all_questions)
@@ -78,7 +81,7 @@ def main() -> None:
         subjects_with_all_answers, candidate, True
     )
 
-    print()
+    print_document_generation_done(generated_answers_document, True)
 
     # List subjects without answer files for all necessary question files, if applicable
     if subjects_without_all_answers:
