@@ -53,7 +53,7 @@ def print_subjects_summary(subjects: list[SubjectData]) -> None:
         print()
 
 
-def print_document_generation_done(
+def print_documents_generation_done(
     generated_documents: list[Path], is_answers_documents: bool = False
 ) -> None:
     normalized_path = os.path.normpath(generated_documents[0])
@@ -75,7 +75,7 @@ def print_document_generation_done(
         print(f"  - {file_name}")
 
 
-def print_document_generation_not_done(
+def print_documents_generation_not_done(
     not_generated_documents: list, is_answers_documents: bool = False
 ) -> None:
     if is_answers_documents:

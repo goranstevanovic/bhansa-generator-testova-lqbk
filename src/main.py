@@ -21,8 +21,8 @@ from ui import (
     print_candidate_info,
     print_assessor_info,
     print_subjects_summary,
-    print_document_generation_done,
-    print_document_generation_not_done,
+    print_documents_generation_done,
+    print_documents_generation_not_done,
     wait_for_exit,
 )
 from file_utils import (
@@ -71,7 +71,7 @@ def main() -> None:
 
     # List subjects without all necessary question files, if applicable
     if subjects_without_all_questions:
-        print_document_generation_not_done(subjects_without_all_questions)
+        print_documents_generation_not_done(subjects_without_all_questions)
 
     # Generate answers document
     generated_answers_document = generate_one_document_for_all_subjects(
@@ -82,7 +82,7 @@ def main() -> None:
 
     # List subjects without answer files for all necessary question files, if applicable
     if subjects_without_all_answers:
-        print_document_generation_not_done(subjects_without_all_answers, True)
+        print_documents_generation_not_done(subjects_without_all_answers, True)
 
     # Delete temporay folder
     delete_tmp_folder()
