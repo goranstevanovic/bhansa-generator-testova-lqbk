@@ -79,10 +79,8 @@ def print_documents_generation_not_done(
     not_generated_documents: list, is_answers_documents: bool = False
 ) -> None:
     if is_answers_documents:
-        print()
         print("Одговори нису генерисани за сљедеће области:")
     else:
-        print()
         print("Тестови нису генерисани за сљедеће области:")
 
     for document in not_generated_documents:
@@ -104,6 +102,8 @@ def print_documents_generation_not_done(
             print(f"  Одговори који недостају у бази: {missing_documents_str}")
         else:
             print(f"  Питања која недостају у бази: {missing_documents_str}")
+
+    print()
 
 
 def print_document_generation_done(
@@ -128,6 +128,8 @@ def print_document_generation_done(
     else:
         print("Тестови су генерисани.")
         print(f"Тестови су сачувани у фолдеру '{output_folder}' / '{candidate_folder}'")
+
+    print()
 
 
 def wait_for_exit() -> None:
