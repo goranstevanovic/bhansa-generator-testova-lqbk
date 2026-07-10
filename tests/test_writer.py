@@ -9,7 +9,7 @@ from spire.doc.common import *
 
 from writer import (
     create_output_document_path,
-    create_cover_page,
+    create_cover_page_for_subject,
     generate_document_for_subject,
     generate_documents_for_all_subjects,
 )
@@ -19,11 +19,13 @@ SAMPLE_QUESTIONS_PATH = FIXTURES_PATH / "baza" / "pitanja"
 SAMPLE_ANSWERS_PATH = FIXTURES_PATH / "baza" / "odgovori"
 SAMPLE_OUTPUT_PATH = FIXTURES_PATH / "output"
 SAMPLE_TEMPORARY_PATH = FIXTURES_PATH / "tmp"
-SAMPLE_COVER_TEMPLATE = FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna.docx"
-SAMPLE_COVER_TEMPLATE_ANSWERS = (
+SAMPLE_SUBJECT_COVER_TEMPLATE = (
+    FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna.docx"
+)
+SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS = (
     FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna-odgovori.docx"
 )
-SAMPLE_COVER_PAGE = FIXTURES_PATH / "baza" / "predlosci" / "naslovna.docx"
+SAMPLE_MAIN_COVER_PAGE = FIXTURES_PATH / "baza" / "predlosci" / "naslovna.docx"
 SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
@@ -130,22 +132,22 @@ class TestCreateOutputDocumentPath:
 
 # Tests for create_cover_page()
 class TestCreateCoverPage:
-    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     def test_creates_cover_page_file(self, sample_subject):
-        result = create_cover_page(sample_subject)
+        result = create_cover_page_for_subject(sample_subject)
 
         assert result.exists()
         assert result.suffix == ".docx"
 
-    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     def test_cover_page_for_tests_contains_correct_text(self, sample_subject):
-        result = create_cover_page(sample_subject)
+        result = create_cover_page_for_subject(sample_subject)
 
         # Open created document
         doc = Document()
@@ -159,12 +161,14 @@ class TestCreateCoverPage:
         assert "npo" in full_text
         assert "odgovori" not in full_text
 
-    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch(
+        "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
+    )
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     def test_cover_page_for_test_answers_contains_correct_text(self, sample_subject):
-        result = create_cover_page(sample_subject, True)
+        result = create_cover_page_for_subject(sample_subject, True)
 
         # Open created document
         doc = Document()
@@ -182,8 +186,10 @@ class TestCreateCoverPage:
 # Tests for generate_document_for_subject()
 class TestGenerateDocumentForSubject:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
-    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch(
+        "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
+    )
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -205,7 +211,7 @@ class TestGenerateDocumentForSubject:
         assert result_questions.suffix == ".docx"
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -237,7 +243,9 @@ class TestGenerateDocumentForSubject:
         assert sample_questions["pitanje9"] not in full_text
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch(
+        "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
+    )
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -272,7 +280,7 @@ class TestGenerateDocumentForSubject:
 # Tests for generate_documents_for_all_subjects()
 class TestDocumentsForAllSubjects:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    @patch("writer.COVER_PAGE", SAMPLE_COVER_PAGE)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
@@ -288,7 +296,9 @@ class TestDocumentsForAllSubjects:
         assert all(res.exists() for res in results)
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    @patch("writer.COVER_TEMPLATE_ANSWERS", SAMPLE_COVER_TEMPLATE_ANSWERS)
+    @patch(
+        "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
+    )
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
