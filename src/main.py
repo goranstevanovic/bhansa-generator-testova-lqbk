@@ -13,7 +13,6 @@ from config import (
 )
 from reader import load_employee_data, load_all_subject_data
 from writer import (
-    generate_documents_for_all_subjects,
     generate_one_document_for_all_subjects,
 )
 from ui import (
@@ -21,7 +20,6 @@ from ui import (
     print_candidate_info,
     print_assessor_info,
     print_subjects_summary,
-    print_documents_generation_done,
     print_documents_generation_not_done,
     print_document_generation_done,
     wait_for_exit,
