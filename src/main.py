@@ -12,7 +12,10 @@ from config import (
     GENERATED_NUMBERS_RANGE,
 )
 from reader import load_employee_data, load_all_subject_data
-from writer import generate_documents_for_all_subjects
+from writer import (
+    generate_documents_for_all_subjects,
+    generate_one_document_for_all_subjects,
+)
 from ui import (
     print_title,
     print_candidate_info,
@@ -61,31 +64,25 @@ def main() -> None:
         check_document_availability(subjects, True)
     )
 
-    # Generate tests
-    generated_tests = generate_documents_for_all_subjects(
-        subjects_with_all_questions, candidate
+    # Generate questions document
+    generated_questions_document = generate_one_document_for_all_subjects(
+        subjects_with_all_questions, candidate, False
     )
-
-    print_document_generation_done(generated_tests)
 
     # List subjects without all necessary question files, if applicable
     if subjects_without_all_questions:
         print_document_generation_not_done(subjects_without_all_questions)
 
-    # Generate test answers
-    generated_test_answers = generate_documents_for_all_subjects(
+    # Generate answers document
+    generated_answers_document = generate_one_document_for_all_subjects(
         subjects_with_all_answers, candidate, True
     )
 
     print()
 
-    # If at least one test answers document was generated, show information about that
-    if generated_test_answers:
-        print_document_generation_done(generated_test_answers, True)
-
-        # List subjects without answer files for all necessary question files, if applicable
-        if subjects_without_all_answers:
-            print_document_generation_not_done(subjects_without_all_answers, True)
+    # List subjects without answer files for all necessary question files, if applicable
+    if subjects_without_all_answers:
+        print_document_generation_not_done(subjects_without_all_answers, True)
 
     # Delete temporay folder
     delete_tmp_folder()
