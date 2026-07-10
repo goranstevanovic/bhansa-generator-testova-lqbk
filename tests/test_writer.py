@@ -129,6 +129,36 @@ class TestCreateOutputDocumentPath:
 
         assert result.parent.exists()
 
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    def test_creates_temporary_tests_document_path(
+        self, sample_employee, sample_subject
+    ):
+        result = create_output_document_path(
+            sample_subject, sample_employee, False, True
+        )
+
+        expected_result = (
+            Path(SAMPLE_TEMPORARY_PATH)
+            / f"{sample_subject['abbreviation'].lower()}.docx"
+        )
+
+        assert result == expected_result
+
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    def test_creates_temporary_answers_document_path(
+        self, sample_employee, sample_subject
+    ):
+        result = create_output_document_path(
+            sample_subject, sample_employee, True, True
+        )
+
+        expected_result = (
+            Path(SAMPLE_TEMPORARY_PATH)
+            / f"{sample_subject['abbreviation'].lower()} odgovori.docx"
+        )
+
+        assert result == expected_result
+
 
 # Tests for create_cover_page()
 class TestCreateCoverPage:

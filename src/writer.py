@@ -19,20 +19,33 @@ from models import EmployeeData, SubjectData
 
 
 def create_output_document_path(
-    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+    subject: SubjectData,
+    employee: EmployeeData,
+    is_answers_document: bool = False,
+    is_temporary_file: bool = False,
 ) -> Path:
-    """Create a file path for a test document."""
+    """
+    Create a file path for a questions or answers document.
+    Allows creation of paths in the output folder, or in the temporary folder.
+    """
     subject_abbrev = subject["abbreviation"]
     employee_name = employee["name"]
     employee_license = employee["license"]
 
-    folder_path = OUTPUT_PATH / f"{employee_name} {employee_license}"
+    if is_temporary_file:
+        folder_path = TEMPORARY_PATH
+    else:
+        folder_path = OUTPUT_PATH / f"{employee_name} {employee_license}"
+
     folder_path.mkdir(parents=True, exist_ok=True)
 
-    file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
+    if is_temporary_file:
+        file_name = subject_abbrev.lower()
+    else:
+        file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
 
     if is_answers_document:
-        file_name += " одговори"
+        file_name += " odgovori"
 
     file_name += ".docx"
 
