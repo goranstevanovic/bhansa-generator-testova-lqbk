@@ -12,6 +12,7 @@ from writer import (
     create_cover_page_for_subject,
     generate_document_for_subject,
     generate_documents_for_all_subjects,
+    generate_one_document_for_all_subjects,
 )
 
 FIXTURES_PATH = Path("tests/fixtures")
@@ -89,6 +90,43 @@ def sample_questions():
     }
 
 
+# Sample questions from all subjects
+@pytest.fixture
+def sample_all_questions():
+    return {
+        "npo": {
+            "pitanje1": "Naziv prve oblasti: Prvo pitanje",
+            "pitanje2": "Naziv prve oblasti: Drugo pitanje",
+            "pitanje3": "Naziv prve oblasti: Treće pitanje",
+            "pitanje4": "Naziv prve oblasti: Četvrto pitanje",
+            "pitanje5": "Naziv prve oblasti: Peto pitanje",
+            "pitanje6": "Naziv prve oblasti: Šesto pitanje",
+            "pitanje7": "Naziv prve oblasti: Sedmo pitanje",
+            "pitanje8": "Naziv prve oblasti: Osmo pitanje",
+            "pitanje9": "Naziv prve oblasti: Deveto pitanje",
+            "pitanje10": "Naziv prve oblasti: Deseto pitanje",
+        },
+        "ndo": {
+            "pitanje1": "Naziv druge oblasti: Prvo pitanje",
+            "pitanje2": "Naziv druge oblasti: Drugo pitanje",
+            "pitanje3": "Naziv druge oblasti: Treće pitanje",
+            "pitanje4": "Naziv druge oblasti: Četvrto pitanje",
+            "pitanje5": "Naziv druge oblasti: Peto pitanje",
+            "pitanje6": "Naziv druge oblasti: Šesto pitanje",
+            "pitanje7": "Naziv druge oblasti: Sedmo pitanje",
+            "pitanje8": "Naziv druge oblasti: Osmo pitanje",
+        },
+        "nto": {
+            "pitanje1": "Naziv treće oblasti: Prvo pitanje",
+            "pitanje2": "Naziv treće oblasti: Drugo pitanje",
+            "pitanje3": "Naziv treće oblasti: Treće pitanje",
+            "pitanje4": "Naziv treće oblasti: Četvrto pitanje",
+            "pitanje5": "Naziv treće oblasti: Peto pitanje",
+            "pitanje6": "Naziv treće oblasti: Šesto pitanje",
+        },
+    }
+
+
 # Sample answers
 @pytest.fixture
 def sample_answers():
@@ -103,6 +141,43 @@ def sample_answers():
         "odgovor8": "Naziv prve oblasti: Osmo pitanje - odgovor",
         "odgovor9": "Naziv prve oblasti: Deveto pitanje - odgovor",
         "odgovor10": "Naziv prve oblasti: Deseto pitanje - odgovor",
+    }
+
+
+# Sample answers from all subjects
+@pytest.fixture
+def sample_all_answers():
+    return {
+        "npo": {
+            "odgovor1": "Naziv prve oblasti: Prvo pitanje - odgovor",
+            "odgovor2": "Naziv prve oblasti: Drugo pitanje - odgovor",
+            "odgovor3": "Naziv prve oblasti: Treće pitanje - odgovor",
+            "odgovor4": "Naziv prve oblasti: Četvrto pitanje - odgovor",
+            "odgovor5": "Naziv prve oblasti: Peto pitanje - odgovor",
+            "odgovor6": "Naziv prve oblasti: Šesto pitanje - odgovor",
+            "odgovor7": "Naziv prve oblasti: Sedmo pitanje - odgovor",
+            "odgovor8": "Naziv prve oblasti: Osmo pitanje - odgovor",
+            "odgovor9": "Naziv prve oblasti: Deveto pitanje - odgovor",
+            "odgovor10": "Naziv prve oblasti: Deseto pitanje - odgovor",
+        },
+        "ndo": {
+            "odgovor1": "Naziv druge oblasti: Prvo pitanje - odgovor",
+            "odgovor2": "Naziv druge oblasti: Drugo pitanje - odgovor",
+            "odgovor3": "Naziv druge oblasti: Treće pitanje - odgovor",
+            "odgovor4": "Naziv druge oblasti: Četvrto pitanje - odgovor",
+            "odgovor5": "Naziv druge oblasti: Peto pitanje - odgovor",
+            "odgovor6": "Naziv druge oblasti: Šesto pitanje - odgovor",
+            "odgovor7": "Naziv druge oblasti: Sedmo pitanje - odgovor",
+            "odgovor8": "Naziv druge oblasti: Osmo pitanje - odgovor",
+        },
+        "nto": {
+            "odgovor1": "Naziv treće oblasti: Prvo pitanje - odgovor",
+            "odgovor2": "Naziv treće oblasti: Drugo pitanje - odgovor",
+            "odgovor3": "Naziv treće oblasti: Treće pitanje - odgovor",
+            "odgovor4": "Naziv treće oblasti: Četvrto pitanje - odgovor",
+            "odgovor5": "Naziv treće oblasti: Peto pitanje - odgovor",
+            "odgovor6": "Naziv treće oblasti: Šesto pitanje - odgovor",
+        },
     }
 
 
@@ -342,3 +417,141 @@ class TestDocumentsForAllSubjects:
 
         assert len(results) == 3
         assert all(res.exists() for res in results)
+
+
+class TestGenerateOneDocumentForAllSubjects:
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
+    def test_generated_test_file_contains_selected_questions(
+        self,
+        sample_subject,
+        sample_subject_2,
+        sample_subject_3,
+        sample_employee,
+        sample_all_questions,
+    ):
+        subjects = [sample_subject, sample_subject_2, sample_subject_3]
+
+        result = generate_one_document_for_all_subjects(
+            subjects, sample_employee, False
+        )
+
+        # Open created document
+        doc = Document()
+        doc.LoadFromFile(str(result))
+
+        # Get all text from document
+        full_text = doc.GetText()
+
+        # Assert selected questions are in document
+        assert sample_all_questions["npo"]["pitanje1"] in full_text
+        assert sample_all_questions["npo"]["pitanje10"] in full_text
+        assert sample_all_questions["ndo"]["pitanje1"] in full_text
+        assert sample_all_questions["ndo"]["pitanje7"] in full_text
+        assert sample_all_questions["nto"]["pitanje2"] in full_text
+        assert sample_all_questions["nto"]["pitanje5"] in full_text
+
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
+    def test_generated_test_file_does_not_contain_non_selected_questions(
+        self,
+        sample_subject,
+        sample_subject_2,
+        sample_subject_3,
+        sample_employee,
+        sample_all_questions,
+    ):
+        subjects = [sample_subject, sample_subject_2, sample_subject_3]
+
+        result = generate_one_document_for_all_subjects(
+            subjects, sample_employee, False
+        )
+
+        # Open created document
+        doc = Document()
+        doc.LoadFromFile(str(result))
+
+        # Get all text from document
+        full_text = doc.GetText()
+
+        # Assert non-selected questions are not in document
+        assert sample_all_questions["npo"]["pitanje2"] not in full_text
+        assert sample_all_questions["npo"]["pitanje9"] not in full_text
+        assert sample_all_questions["ndo"]["pitanje2"] not in full_text
+        assert sample_all_questions["ndo"]["pitanje8"] not in full_text
+        assert sample_all_questions["nto"]["pitanje1"] not in full_text
+        assert sample_all_questions["nto"]["pitanje6"] not in full_text
+
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_generated_answers_file_contains_selected_questions(
+        self,
+        sample_subject,
+        sample_subject_2,
+        sample_subject_3,
+        sample_employee,
+        sample_all_answers,
+    ):
+        subjects = [sample_subject, sample_subject_2, sample_subject_3]
+
+        result = generate_one_document_for_all_subjects(subjects, sample_employee, True)
+
+        # Open created document
+        doc = Document()
+        doc.LoadFromFile(str(result))
+
+        # Get all text from document
+        full_text = doc.GetText()
+
+        # Assert selected questions are in document
+        assert sample_all_answers["npo"]["odgovor1"] in full_text
+        assert sample_all_answers["npo"]["odgovor10"] in full_text
+        assert sample_all_answers["ndo"]["odgovor1"] in full_text
+        assert sample_all_answers["ndo"]["odgovor7"] in full_text
+        assert sample_all_answers["nto"]["odgovor2"] in full_text
+        assert sample_all_answers["nto"]["odgovor5"] in full_text
+
+    @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
+    @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
+    @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
+    @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
+    def test_generated_answers_file_does_not_contain_non_selected_questions(
+        self,
+        sample_subject,
+        sample_subject_2,
+        sample_subject_3,
+        sample_employee,
+        sample_all_answers,
+    ):
+        subjects = [sample_subject, sample_subject_2, sample_subject_3]
+
+        result = generate_one_document_for_all_subjects(subjects, sample_employee, True)
+
+        # Open created document
+        doc = Document()
+        doc.LoadFromFile(str(result))
+
+        # Get all text from document
+        full_text = doc.GetText()
+
+        # Assert non-selected questions are not in document
+        assert sample_all_answers["npo"]["odgovor2"] not in full_text
+        assert sample_all_answers["npo"]["odgovor9"] not in full_text
+        assert sample_all_answers["ndo"]["odgovor2"] not in full_text
+        assert sample_all_answers["ndo"]["odgovor8"] not in full_text
+        assert sample_all_answers["nto"]["odgovor1"] not in full_text
+        assert sample_all_answers["nto"]["odgovor6"] not in full_text
