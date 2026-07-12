@@ -53,7 +53,7 @@ def print_subjects_summary(subjects: list[SubjectData]) -> None:
         print()
 
 
-def print_document_generation_done(
+def print_documents_generation_done(
     generated_documents: list[Path], is_answers_documents: bool = False
 ) -> None:
     normalized_path = os.path.normpath(generated_documents[0])
@@ -75,14 +75,12 @@ def print_document_generation_done(
         print(f"  - {file_name}")
 
 
-def print_document_generation_not_done(
+def print_documents_generation_not_done(
     not_generated_documents: list, is_answers_documents: bool = False
 ) -> None:
     if is_answers_documents:
-        print()
         print("Одговори нису генерисани за сљедеће области:")
     else:
-        print()
         print("Тестови нису генерисани за сљедеће области:")
 
     for document in not_generated_documents:
@@ -104,6 +102,34 @@ def print_document_generation_not_done(
             print(f"  Одговори који недостају у бази: {missing_documents_str}")
         else:
             print(f"  Питања која недостају у бази: {missing_documents_str}")
+
+    print()
+
+
+def print_document_generation_done(
+    document_path: Path, is_answers_document: bool = False
+) -> None:
+    if document_path is None:
+        if is_answers_document:
+            print("Одговори нису генерисани!!!")
+            return
+        else:
+            print("Тестови нису генерисани!!!")
+            return
+
+    normalized_path = os.path.normpath(document_path)
+    output_folder, candidate_folder, _ = normalized_path.split(os.sep)
+
+    if is_answers_document:
+        print("Одговори су генерисани.")
+        print(
+            f"Одговори су сачувани у фолдеру '{output_folder}' / '{candidate_folder}'"
+        )
+    else:
+        print("Тестови су генерисани.")
+        print(f"Тестови су сачувани у фолдеру '{output_folder}' / '{candidate_folder}'")
+
+    print()
 
 
 def wait_for_exit() -> None:

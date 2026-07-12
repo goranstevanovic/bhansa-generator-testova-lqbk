@@ -1,6 +1,21 @@
 # Istorija izmijena
 
+## [1.5.0] - 2026-07-12
+
+### Izmjenjeno
+
+- Generisanje jednog dokumenta sa odabranim pitanjima, umjesto posebnog dokumenta za svaku oblast
+- Generisanje jednog dokumenta sa odgovorima na odabrana pitanja, umjesto posebnog dokumenta za svaku oblast
+
+## [1.4.1] - 2026-07-10
+
+### Ispravljeno
+
+- Program prepoznaje i generiše testove za oblasti sa dvoslovnom skraćenicom
+
 ## [1.4.0] - 2026-07-09
+
+### Izmjenjeno
 
 - Tekst korisničkog interfejsa programa, poruke u programu i korisničko uputstvo promijenjeni u ćirilicu
 

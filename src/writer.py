@@ -9,8 +9,9 @@ from config import (
     TEMPORARY_PATH,
     QUESTIONS_PATH,
     ANSWERS_PATH,
-    COVER_PAGE,
-    COVER_TEMPLATE_ANSWERS,
+    MAIN_COVER_PAGE,
+    SUBJECT_COVER_TEMPLATE,
+    SUBJECT_COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
     TEMPLATE_ABBREVIATION_STRING,
 )
@@ -18,36 +19,51 @@ from models import EmployeeData, SubjectData
 
 
 def create_output_document_path(
-    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+    subject: SubjectData,
+    employee: EmployeeData,
+    is_answers_document: bool = False,
+    is_temporary_file: bool = False,
 ) -> Path:
-    """Create a file path for a test document."""
+    """
+    Create a file path for a questions or answers document.
+    Allows creation of paths in the output folder, or in the temporary folder.
+    """
     subject_abbrev = subject["abbreviation"]
     employee_name = employee["name"]
     employee_license = employee["license"]
 
-    folder_path = OUTPUT_PATH / f"{employee_name} {employee_license}"
+    if is_temporary_file:
+        folder_path = TEMPORARY_PATH
+    else:
+        folder_path = OUTPUT_PATH / f"{employee_name} {employee_license}"
+
     folder_path.mkdir(parents=True, exist_ok=True)
 
-    file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
+    if is_temporary_file:
+        file_name = subject_abbrev.lower()
+    else:
+        file_name = f"{employee_name} {employee_license} {subject_abbrev.upper()}"
 
     if is_answers_document:
-        file_name += " одговори"
+        file_name += " odgovori"
 
     file_name += ".docx"
 
     return folder_path / file_name
 
 
-def create_cover_page(subject: SubjectData, is_answers_document: bool = False) -> Path:
+def create_cover_page_for_subject(
+    subject: SubjectData, is_answers_document: bool = False
+) -> Path:
     """Create cover page and return temporary file path."""
     if is_answers_document:
-        cover_page = DocxTemplate(COVER_TEMPLATE_ANSWERS)
+        cover_page = DocxTemplate(SUBJECT_COVER_TEMPLATE_ANSWERS)
     else:
-        cover_page = DocxTemplate(COVER_PAGE)
+        cover_page = DocxTemplate(SUBJECT_COVER_TEMPLATE)
 
     context = {
         TEMPLATE_TITLE_STRING: subject["title"],
-        TEMPLATE_ABBREVIATION_STRING: subject["abbreviation"],
+        TEMPLATE_ABBREVIATION_STRING: subject["abbreviation"].upper(),
     }
     cover_page.render(context)
 
@@ -59,22 +75,38 @@ def create_cover_page(subject: SubjectData, is_answers_document: bool = False) -
 
 
 def generate_document_for_subject(
-    subject: SubjectData, employee: EmployeeData, is_answers_document: bool = False
+    subject: SubjectData,
+    employee: EmployeeData,
+    is_answers_document: bool = False,
+    is_temporary_file: bool = False,
 ) -> Path:
-    """Merge cover page with selected question or answer files."""
+    """
+    Merge cover page with selected question or answer files.
+    Save it in the output folder, or in the temporary folder.
+    """
     subject_abbrev = subject["abbreviation"]
 
     # Get output document file path
-    if is_answers_document:
-        output_file_path = create_output_document_path(subject, employee, True)
+    if is_temporary_file:
+        if is_answers_document:
+            output_file_path = create_output_document_path(
+                subject, employee, True, True
+            )
+        else:
+            output_file_path = create_output_document_path(
+                subject, employee, False, True
+            )
     else:
-        output_file_path = create_output_document_path(subject, employee)
+        if is_answers_document:
+            output_file_path = create_output_document_path(subject, employee, True)
+        else:
+            output_file_path = create_output_document_path(subject, employee)
 
     # Create cover page
     if is_answers_document:
-        cover_page_path = create_cover_page(subject, True)
+        cover_page_path = create_cover_page_for_subject(subject, True)
     else:
-        cover_page_path = create_cover_page(subject)
+        cover_page_path = create_cover_page_for_subject(subject)
 
     # Create file names from generated numbers
     question_numbers = subject["generated_numbers"]
@@ -130,3 +162,50 @@ def generate_documents_for_all_subjects(
         output_paths.append(output_path)
 
     return output_paths
+
+
+def generate_one_document_for_all_subjects(
+    subjects: list[SubjectData],
+    employee: EmployeeData,
+    is_answers_document: bool = False,
+) -> Path:
+    """
+    Generate one document that contains questions or answers for each subject.
+    Return list of output file path.
+    """
+    # Create output document folder
+    output_file_path = OUTPUT_PATH / f"{employee['name']} {employee['license']}"
+
+    # Append file name and extension, and if the document contains answers
+    if is_answers_document:
+        output_file_path /= f"{employee['name']} {employee['license']} odgovori.docx"
+    else:
+        output_file_path /= f"{employee['name']} {employee['license']}.docx"
+
+    # Create list of temporary files created for each subject
+    generated_subject_documents = []
+
+    for subject in subjects:
+        subject_document_path = generate_document_for_subject(
+            subject, employee, is_answers_document, True
+        )
+        generated_subject_documents.append(subject_document_path)
+
+    # Create main subject document with main cover page
+    main_document = Document()
+    main_document.LoadFromFile(str(MAIN_COVER_PAGE))
+
+    # Append each temporary subject document to main document
+    for document in generated_subject_documents:
+        main_document.InsertTextFromFile(str(document), FileFormat.Docx2016)
+
+    # Save file compatible with Word 2016
+    main_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
+    main_document.Close()
+
+    # Delete watermark from the top of the document generated by Spire.Doc
+    main_document = Doc(str(output_file_path))
+    main_document.paragraphs[0].clear()
+    main_document.save(output_file_path)
+
+    return output_file_path
