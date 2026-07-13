@@ -1,5 +1,12 @@
 # Istorija izmijena
 
+## [1.6.0] - 2026-07-13
+
+### Izmjenjeno
+
+- Redni broj pitanja u generisanim dokumenetima je redni broj iz baze, a ne redni broj u tom dokumentu
+- Umjesto da pitanja budu numerisana 1, 2, 3..., numerisana su npr. 2, 3, 5
+
 ## [1.5.0] - 2026-07-12
 
 ### Izmjenjeno
