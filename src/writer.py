@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from docxtpl import DocxTemplate
-from spire.doc import Document, FileFormat, ParagraphStyle
+from spire.doc import Document, FileFormat, ParagraphStyle, HorizontalAlignment
 from docx import Document as Doc
 
 from config import (
@@ -98,6 +98,17 @@ def set_question_number(question_file: str, subject_abbrev: str):
     # Insert number based on file name
     para = cell.AddParagraph()
     para.AppendText(f"{number}.")
+
+    # Set paragraph style
+    style = ParagraphStyle(question_doc)
+    style.Name = "Redni broj"
+    style.CharacterFormat.FontName = "Arial"
+    style.CharacterFormat.FontSize = 18
+    style.CharacterFormat.Bold = True
+    style.CharacterFormat.Italic = True
+    style.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center
+    question_doc.Styles.Add(style)
+    para.ApplyStyle("Redni broj")
 
     question_doc.SaveToFile(str(temp_question_path), FileFormat.Docx2016)
     question_doc.Close()
