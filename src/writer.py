@@ -180,7 +180,6 @@ def generate_document_for_subject(
     for i, file in enumerate(files):
         # Set question number to be same as file name
         temp_question_file = set_question_number(file, subject_abbrev)
-        print(temp_question_file)
 
         # Append a question or an answer document
         subject_document.InsertTextFromFile(str(temp_question_file), FileFormat.Auto)
