@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from docxtpl import DocxTemplate
-from spire.doc import Document, FileFormat
+from spire.doc import Document, FileFormat, ParagraphStyle
 from docx import Document as Doc
 
 from config import (
@@ -74,6 +74,37 @@ def create_cover_page_for_subject(
     return temp_file
 
 
+def set_question_number(question_file: str, subject_abbrev: str):
+    """
+    Set question number to be the same as the question document file name.
+    """
+    # Get file name from the file path, ignoring folders and extension
+    number = question_file.split("/")[-1].split(".")[0]
+
+    # Create file path for temporary question document
+    temp_question_path = TEMPORARY_PATH / f"{number}.docx"
+
+    # Create temporary question file
+    question_doc = Document()
+    question_doc.LoadFromFile(question_file)
+
+    # Get table and cell references
+    table = question_doc.Sections[0].Tables[0]
+    cell = table.Rows[1].Cells[0]
+
+    # Delete current question number
+    cell.Paragraphs.RemoveAt(0)
+
+    # Insert number based on file name
+    para = cell.AddParagraph()
+    para.AppendText(f"{number}.")
+
+    question_doc.SaveToFile(str(temp_question_path), FileFormat.Docx2016)
+    question_doc.Close()
+
+    return temp_question_path
+
+
 def generate_document_for_subject(
     subject: SubjectData,
     employee: EmployeeData,
@@ -130,8 +161,12 @@ def generate_document_for_subject(
 
     # Merge individual documents (questions or answers)
     for i, file in enumerate(files):
+        # Set question number to be same as file name
+        temp_question_file = set_question_number(file, subject_abbrev)
+        print(temp_question_file)
+
         # Append a question or an answer document
-        subject_document.InsertTextFromFile(str(file), FileFormat.Auto)
+        subject_document.InsertTextFromFile(str(temp_question_file), FileFormat.Auto)
 
     # Save file compatible with Word 2016
     subject_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
