@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.6.1] - 2026-07-14
+
+### Ispravljeno
+
+- Čuvanje izgleda pitanja i odgovora u generisanim dokumentima (izgled slova, tačkice i brojevi u listama...)
+
 ## [1.6.0] - 2026-07-13
 
 ### Izmjenjeno

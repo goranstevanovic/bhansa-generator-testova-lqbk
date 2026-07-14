@@ -246,9 +246,25 @@ def generate_one_document_for_all_subjects(
     main_document = Document()
     main_document.LoadFromFile(str(MAIN_COVER_PAGE))
 
-    # Append each temporary subject document to main document
-    for document in generated_subject_documents:
-        main_document.InsertTextFromFile(str(document), FileFormat.Docx2016)
+    for document_path in generated_subject_documents:
+        source_document = Document()
+        source_document.LoadFromFile(str(document_path))
+
+        # Preserve source formatting and document-level list styles
+        source_document.KeepSameFormat = True
+
+        # Clone complete sections
+        for section_index in range(source_document.Sections.Count):
+            source_section = source_document.Sections.get_Item(section_index)
+            cloned_section = source_section.Clone()
+
+            # Prevent new section from inheriting preceding section's
+            # headers and footers
+            cloned_section.HeadersFooters.LinkToPrevious = False
+
+            main_document.Sections.Add(cloned_section)
+
+        source_document.Close()
 
     # Save file compatible with Word 2016
     main_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
