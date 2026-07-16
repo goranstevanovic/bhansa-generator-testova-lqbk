@@ -1,7 +1,15 @@
 from pathlib import Path
 
 from docxtpl import DocxTemplate
-from spire.doc import Document, FileFormat, ParagraphStyle, HorizontalAlignment
+from spire.doc import (
+    Document,
+    FileFormat,
+    ParagraphStyle,
+    HorizontalAlignment,
+    FieldType,
+    BorderStyle,
+    Color,
+)
 from docx import Document as Doc
 
 from config import (
@@ -215,6 +223,69 @@ def generate_documents_for_all_subjects(
     return output_paths
 
 
+def insert_page_numbers(doc: Document) -> None:
+    """Insert page numbers in the footer."""
+
+    def clear_footer(footer) -> None:
+        """Unlink and empty a footer."""
+        footer.LinkToPrevious = False
+        footer.ChildObjects.Clear()
+        footer.AddParagraph()
+
+    # Page number style
+    style_name = "PageNumberFooter"
+    page_number_style = doc.AddParagraphStyle(style_name)
+    page_number_style.CharacterFormat.FontName = "Arial"
+    page_number_style.CharacterFormat.FontSize = 11
+
+    # Loop through all sections
+    for i in range(doc.Sections.Count):
+        section = doc.Sections.get_Item(i)
+        headers_footers = section.HeadersFooters
+
+        # Use default footer on both odd and even pages
+        section.PageSetup.DifferentOddAndEvenPagesHeaderFooter = False
+
+        if i == 0:
+            # Make first-page's footer independent and empty
+            section.PageSetup.DifferentFirstPageHeaderFooter = True
+
+            clear_footer(headers_footers.Footer)
+            clear_footer(headers_footers.FirstPageFooter)
+            clear_footer(headers_footers.EvenFooter)
+
+            section.PageSetup.RestartPageNumbering = False
+            continue
+
+        # Use normal/default footer on every numbered section
+        section.PageSetup.DifferentFirstPageHeaderFooter = False
+
+        footer = headers_footers.Footer
+        footer.LinkToPrevious = False
+        footer.ChildObjects.Clear()
+
+        paragraph = footer.AddParagraph()
+        paragraph.AppendField("page number", FieldType.FieldPage)
+        paragraph.Format.HorizontalAlignment = HorizontalAlignment.Right
+        paragraph.ApplyStyle(style_name)
+
+        # Add horizontal line above footer
+        top_border = paragraph.Format.Borders.Top
+        top_border.BorderType = BorderStyle.Single
+        top_border.LineWidth = 1
+        top_border.Color = Color.get_Black()
+        top_border.Space = 8
+
+        # Start numbering after cover page
+        if i == 1:
+            # First page after cover starts at page 1
+            section.PageSetup.RestartPageNumbering = True
+            section.PageSetup.PageStartingNumber = 1
+        else:
+            # Continue numbering from preceding section
+            section.PageSetup.RestartPageNumbering = False
+
+
 def generate_one_document_for_all_subjects(
     subjects: list[SubjectData],
     employee: EmployeeData,
@@ -262,6 +333,9 @@ def generate_one_document_for_all_subjects(
             main_document.Sections.Add(cloned_section)
 
         source_document.Close()
+
+    # Insert page numbers
+    insert_page_numbers(main_document)
 
     # Save file compatible with Word 2016
     main_document.SaveToFile(str(output_file_path), FileFormat.Docx2016)
