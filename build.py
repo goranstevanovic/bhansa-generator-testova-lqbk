@@ -61,6 +61,9 @@ FOLDERS_GENERATED_TESTS = ["generisani-testovi"]
 # Question number generator file
 QUESTIONS_GENERATOR = "FORM.xlsm"
 
+# User guide file
+USER_GUIDE = "uputstvo.html"
+
 
 def get_platform() -> str:
     """Get OS/platform as a string."""
@@ -215,7 +218,9 @@ def copy_files(sources: list, dest_root: Path) -> list[tuple[Path, Path]]:
     return copied_files
 
 
-def copy_basic_release_files(sources: list, dest_root: Path) -> list[tuple[Path, Path]]:
+def copy_basic_release_files(
+    sources: list, dest_root: Path
+) -> tuple[list[tuple[Path, Path]], str]:
     """
     Copy basic release files from source to destination folders.
     Basic release files are template files, that don't contain sensitive
@@ -223,7 +228,12 @@ def copy_basic_release_files(sources: list, dest_root: Path) -> list[tuple[Path,
 
     """
     # Copy template files
-    return copy_files(sources, dest_root)
+    copied_templates = copy_files(sources, dest_root)
+
+    # Copy user guide
+    copied_user_guide = shutil.copy2(USER_GUIDE, BUNDLE_ROOT_FOLDER_FINAL_NAME)
+
+    return copied_templates, copied_user_guide
 
 
 def copy_full_release_files() -> (
