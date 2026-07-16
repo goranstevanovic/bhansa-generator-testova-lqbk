@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.6.3.] - 2026-07-16
+
+### Ispravljeno
+
+- Arhiva programa za distribuciju sadrži korisničko uputstvo
+
 ## [1.6.2] - 2026-07-16
 
 ### Ispravljeno
