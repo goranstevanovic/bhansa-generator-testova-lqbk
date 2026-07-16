@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.6.2] - 2026-07-16
+
+### Ispravljeno
+
+- Sve stranice osim prve (naslovne) su numerisane
+
 ## [1.6.1] - 2026-07-14
 
 ### Ispravljeno
