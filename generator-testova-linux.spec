@@ -40,5 +40,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='generator-testova',
+    name='generator-testova-lqbk',
 )
