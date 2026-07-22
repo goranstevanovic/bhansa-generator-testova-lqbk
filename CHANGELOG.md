@@ -1,5 +1,12 @@
 # Istorija izmijena
 
+## [1.6.4] - 2026-07-22
+
+### Ispravljeno
+
+- Umjesto samo jednog fajla (`generator-testova.exe`), program sadrži i folder sa ostalim potrebnim fajlovima (`_internal`)
+- Koristeći samo jedan fajl, bez pratećeg foldera, može uzrokovati da neki anti-virus programi prepoznaju ovaj program kao virus
+
 ## [1.6.3.] - 2026-07-16
 
 ### Ispravljeno

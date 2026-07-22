@@ -173,19 +173,6 @@ def create_folders(folders: list[str]) -> list[Path]:
 
 def create_folder_structure() -> list[list[Path]]:
     """Create empty folder structure and copy template files."""
-    # Create bundle folder
-    os.makedirs(BUNDLE_ROOT_FOLDER_TEMP_NAME)
-
-    # Move executable file into bundle folder
-    if get_platform() == "win32":
-        shutil.move(
-            WINDOWS_EXE_PATH, BUNDLE_ROOT_FOLDER_TEMP_NAME / "generator-testova.exe"
-        )
-    elif get_platform() == "linux":
-        shutil.move(LINUX_EXE_PATH, BUNDLE_ROOT_FOLDER_TEMP_NAME)
-
-    # Rename bundle root folder
-    shutil.move(BUNDLE_ROOT_FOLDER_TEMP_NAME, BUNDLE_ROOT_FOLDER_FINAL_NAME)
 
     # Create template, questions, answers, and generated tests folders
     created_folders = []
