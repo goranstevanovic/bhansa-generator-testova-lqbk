@@ -15,7 +15,7 @@ dev = [
     "pytest",
     "mypy",
     "types-openpyxl",
-    "pyinstaller",
+    "cx-Freeze",
 ]
 
 [tool.pytest.ini_options]
