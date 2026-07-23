@@ -9,8 +9,6 @@ import time
 from pathlib import Path
 from datetime import datetime
 
-import PyInstaller.__main__
-
 from _version import VERSION
 
 # Base name of the release archive file
