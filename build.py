@@ -365,7 +365,7 @@ def main() -> None:
     # Run cx_Freeze
     print("Starting cx_Freeze...")
     run_cx_freeze()
-    print("cx_Freez completed")
+    print("cx_Freeze completed")
     print()
 
     # Move cx_Freeze license to licenses folder
