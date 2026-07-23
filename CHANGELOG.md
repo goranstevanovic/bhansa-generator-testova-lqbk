@@ -1,5 +1,13 @@
 # Istorija izmijena
 
+## [1.7.0] - 2026-07-23
+
+### Izmjenjeno
+
+- Promjenjena struktura fajlova i foldera neophodnih za rad programa
+- Program sadrži dodatne foldere `lib`, `licenses` i `share`
+- Program sadrži dodatni fajl `python314.dll`
+
 ## [1.6.4] - 2026-07-22
 
 ### Ispravljeno
