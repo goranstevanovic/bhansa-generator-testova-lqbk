@@ -158,6 +158,24 @@ def run_cx_freeze() -> str:
     return result.stdout.strip()
 
 
+def move_licenses() -> None:
+    """Move license files into licenses folder."""
+    # List of license files
+    license_files = ["frozen_application_license.txt"]
+    licenses_folder = BUNDLE_ROOT_FOLDER_FINAL_NAME / "licenses"
+
+    # Create licenses folder
+    os.makedirs(licenses_folder)
+
+    print("Moving license files...")
+
+    for file in license_files:
+        shutil.move(BUNDLE_ROOT_FOLDER_FINAL_NAME / file, licenses_folder)
+        print("moved", file)
+
+    print("All license files moved.")
+
+
 def create_folders(folders: list[str]) -> list[Path]:
     """Create folders from provided list of folders."""
     created_folders = []
@@ -348,6 +366,10 @@ def main() -> None:
     print("Starting cx_Freeze...")
     run_cx_freeze()
     print("cx_Freez completed")
+    print()
+
+    # Move cx_Freeze license to licenses folder
+    move_licenses()
     print()
 
     # Create basic folder structure, empty folders, without files
