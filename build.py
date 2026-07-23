@@ -150,14 +150,12 @@ def empty_dist_folder() -> None:
             os.remove(BUNDLE_ROOT_FOLDER_FINAL_NAME)
 
 
-def run_pyinstaller(platform: str) -> None:
-    """Run PyInstaller using appropriate spec file."""
-    if platform == "win32":
-        spec_file = "generator-testova-win.spec"
-    elif platform == "linux":
-        spec_file = "generator-testova-linux.spec"
+def run_cx_freeze() -> str:
+    """Run cx_Freeze."""
+    cmd = ["cxfreeze", "build"]
 
-    PyInstaller.__main__.run(["--clean", spec_file])
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    return result.stdout.strip()
 
 
 def create_folders(folders: list[str]) -> list[Path]:
@@ -346,10 +344,10 @@ def main() -> None:
     print("dist folder cleared")
     print()
 
-    # Run PyInstaller using platform-specific spec file
-    print("Starting PyInstaller...")
-    run_pyinstaller(platform_type)
-    print("PyInstaller completed")
+    # Run cx_Freeze
+    print("Starting cx_Freeze...")
+    run_cx_freeze()
+    print("cx_Freez completed")
     print()
 
     # Create basic folder structure, empty folders, without files
