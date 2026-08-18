@@ -28,6 +28,7 @@ TEMPORARY_PATH = Path("tmp")
 
 # Cover page template file
 MAIN_COVER_PAGE = TEMPLATES_PATH / "naslovna-strana-za-teorijsku-provjeru-znanja.docx"
+INSTRUCTIONS_AFTER_COVER_PAGE = TEMPLATES_PATH / "instrukcije-nakon-naslovne.docx"
 SUBJECT_COVER_TEMPLATE = TEMPLATES_PATH / "template-oblast-naslovna.docx"
 SUBJECT_COVER_TEMPLATE_ANSWERS = (
     TEMPLATES_PATH / "template-oblast-naslovna-odgovori.docx"

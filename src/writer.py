@@ -18,6 +18,7 @@ from config import (
     QUESTIONS_PATH,
     ANSWERS_PATH,
     MAIN_COVER_PAGE,
+    INSTRUCTIONS_AFTER_COVER_PAGE,
     SUBJECT_COVER_TEMPLATE,
     SUBJECT_COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
@@ -246,8 +247,8 @@ def insert_page_numbers(doc: Document) -> None:
         # Use default footer on both odd and even pages
         section.PageSetup.DifferentOddAndEvenPagesHeaderFooter = False
 
-        if i == 0:
-            # Make first-page's footer independent and empty
+        # Make first and second page's footer independent and empty
+        if i == 0 or i == 1:
             section.PageSetup.DifferentFirstPageHeaderFooter = True
 
             clear_footer(headers_footers.Footer)
@@ -277,8 +278,8 @@ def insert_page_numbers(doc: Document) -> None:
         top_border.Space = 8
 
         # Start numbering after cover page
-        if i == 1:
-            # First page after cover starts at page 1
+        if i == 2:
+            # First page after cover and instructions pages starts at page 1
             section.PageSetup.RestartPageNumbering = True
             section.PageSetup.PageStartingNumber = 1
         else:
@@ -316,6 +317,27 @@ def generate_one_document_for_all_subjects(
     # Create main subject document with main cover page
     main_document = Document()
     main_document.LoadFromFile(str(MAIN_COVER_PAGE))
+
+    # Insert instructions page after cover page
+    # Only of questions document, not for answers document
+    if not is_answers_document:
+        # Load instructions document
+        instructions_doc = Document()
+        instructions_doc.LoadFromFile(str(INSTRUCTIONS_AFTER_COVER_PAGE))
+
+        # Clone sections from loaded document
+        for section_index in range(instructions_doc.Sections.Count):
+            section = instructions_doc.Sections.get_Item(section_index)
+            section_clone = section.Clone()
+
+            # Prevent new section from inheriting preceding section's
+            # headers and footers
+            section_clone.HeadersFooters.LinkToPrevious = False
+
+            # Add cloned sections to main document
+            main_document.Sections.Add(section_clone)
+
+        instructions_doc.Close()
 
     for document_path in generated_subject_documents:
         source_document = Document()
