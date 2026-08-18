@@ -60,7 +60,7 @@ def load_employee_data(file: Path, cell: str) -> EmployeeData:
     }
 
 
-def load_test_date_time(file: Path, cell: str) -> dict:
+def load_testing_date_time(file: Path, cell: str) -> dict:
     loaded_value = _load_cell_value(file, cell)
     date, time = loaded_value.split(" ")
 

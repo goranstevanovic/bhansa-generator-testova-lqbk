@@ -12,7 +12,7 @@ from config import (
     PERCENTAGE_RANGE,
     GENERATED_NUMBERS_RANGE,
 )
-from reader import load_employee_data, load_test_date_time, load_all_subject_data
+from reader import load_employee_data, load_testing_date_time, load_all_subject_data
 from writer import (
     generate_one_document_for_all_subjects,
 )
@@ -41,7 +41,7 @@ def main() -> None:
     assessor = load_employee_data(form_file, ASSESSOR_CELL)
 
     # Load date and time of taking test
-    testing_date_time = load_test_date_time(form_file, TEST_DATE_TIME_CELL)
+    testing_date_time = load_testing_date_time(form_file, TEST_DATE_TIME_CELL)
 
     # Load all subject data
     subjects = load_all_subject_data(
