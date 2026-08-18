@@ -7,6 +7,7 @@ from reader import (
     _parse_subject_abbreviation,
     _parse_subject_title,
     load_employee_data,
+    load_test_date_time,
     load_subject_titles,
     _load_numeric_values,
     load_total_questions,
@@ -92,6 +93,14 @@ class TestLoadEmployeeData:
     def test_load_employee_data_from_empty_cell(self):
         result = load_employee_data(SAMPLE_FORM, "A1")
         expected_result = {"name": "", "license": ""}
+
+        assert result == expected_result
+
+
+class TestLoadTestDateAndTime:
+    def test_load_test_date_and_time(self):
+        result = load_test_date_time(SAMPLE_FORM, "B6")
+        expected_result = ("03.03.2026.", "12:00")
 
         assert result == expected_result
 
