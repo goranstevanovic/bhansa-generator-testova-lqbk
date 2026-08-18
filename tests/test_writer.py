@@ -48,8 +48,8 @@ def sample_assessor():
 
 # Sample test date/time
 @pytest.fixture
-def sample_test_date_time():
-    return {"date": "03.03.2026.", "time": "12:00"}
+def sample_testing_date_time():
+    return {"testing_date": "03.03.2026.", "testing_time": "12:00"}
 
 
 # Sample subject
@@ -455,13 +455,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_3,
         sample_candidate,
         sample_assessor,
-        sample_test_date_time,
+        sample_testing_date_time,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, sample_assessor, sample_test_date_time, False
+            subjects, sample_candidate, sample_assessor, sample_testing_date_time, False
         )
 
         # Open created document
@@ -494,13 +494,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_3,
         sample_candidate,
         sample_assessor,
-        sample_test_date_time,
+        sample_testing_date_time,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, sample_assessor, sample_test_date_time, False
+            subjects, sample_candidate, sample_assessor, sample_testing_date_time, False
         )
 
         # Open created document
@@ -535,13 +535,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_3,
         sample_candidate,
         sample_assessor,
-        sample_test_date_time,
+        sample_testing_date_time,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, sample_assessor, sample_test_date_time, True
+            subjects, sample_candidate, sample_assessor, sample_testing_date_time, True
         )
 
         # Open created document
@@ -576,13 +576,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_3,
         sample_candidate,
         sample_assessor,
-        sample_test_date_time,
+        sample_testing_date_time,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, sample_assessor, sample_test_date_time, True
+            subjects, sample_candidate, sample_assessor, sample_testing_date_time, True
         )
 
         # Open created document
