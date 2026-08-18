@@ -12,6 +12,9 @@ QUESTIONS_GENERATOR = "FORM.xlsm"
 CANDIDATE_CELL = "B4"
 ASSESSOR_CELL = "B5"
 
+# Cell address for testing date/time
+TEST_DATE_TIME_CELL = "B6"
+
 # Cell ranges for subject data
 SUBJECT_NAME_RANGE = "A10:A29"
 TOTAL_QUESTIONS_RANGE = "D10:D29"
@@ -35,3 +38,9 @@ SUBJECT_COVER_TEMPLATE_ANSWERS = (
 )
 TEMPLATE_TITLE_STRING = "naziv"
 TEMPLATE_ABBREVIATION_STRING = "skracenica"
+TEMPLATE_CANDIDATE_NAME = "kandidat"
+TEMPLATE_CANDIDATE_LICENSE = "kandidat_dozvola"
+TEMPLATE_ASSESSOR_NAME = "procjenjivac"
+TEMPLATE_ASSESSOR_LICENSE = "procjenjivac_dozvola"
+TEMPLATE_TESTING_DATE = "datum_testiranja"
+TEMPLATE_TESTING_TIME = "vrijeme_testiranja"

@@ -60,6 +60,13 @@ def load_employee_data(file: Path, cell: str) -> EmployeeData:
     }
 
 
+def load_testing_date_time(file: Path, cell: str) -> dict:
+    loaded_value = _load_cell_value(file, cell)
+    date, time = loaded_value.split(" ")
+
+    return {"testing_date": date, "testing_time": time}
+
+
 def load_subject_titles(file: Path, cell_range: str) -> list[SubjectTitle]:
     """Load subject titles and abbreviations."""
     workbook = openpyxl.load_workbook(file, data_only=True)

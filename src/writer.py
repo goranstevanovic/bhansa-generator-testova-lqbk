@@ -23,6 +23,12 @@ from config import (
     SUBJECT_COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
     TEMPLATE_ABBREVIATION_STRING,
+    TEMPLATE_CANDIDATE_NAME,
+    TEMPLATE_CANDIDATE_LICENSE,
+    TEMPLATE_ASSESSOR_NAME,
+    TEMPLATE_ASSESSOR_LICENSE,
+    TEMPLATE_TESTING_DATE,
+    TEMPLATE_TESTING_TIME,
 )
 from models import EmployeeData, SubjectData
 
@@ -59,6 +65,34 @@ def create_output_document_path(
     file_name += ".docx"
 
     return folder_path / file_name
+
+
+def create_cover_page(
+    candidate: EmployeeData, assessor: EmployeeData, testing_date_time: dict
+) -> Path:
+    """
+    Create cover page from cover page template with populated
+    candidate's and assessor's full name and license number and
+    date and time of taking test.
+    """
+    cover_page = DocxTemplate(MAIN_COVER_PAGE)
+
+    context = {
+        TEMPLATE_CANDIDATE_NAME: candidate["name"],
+        TEMPLATE_CANDIDATE_LICENSE: candidate["license"],
+        TEMPLATE_ASSESSOR_NAME: assessor["name"],
+        TEMPLATE_ASSESSOR_LICENSE: assessor["license"],
+        TEMPLATE_TESTING_DATE: testing_date_time["testing_date"],
+        TEMPLATE_TESTING_TIME: testing_date_time["testing_time"],
+    }
+
+    cover_page.render(context)
+
+    temp_file = TEMPORARY_PATH / "main-cover-page.docx"
+    temp_file.parent.mkdir(parents=True, exist_ok=True)
+    cover_page.save(str(temp_file))
+
+    return temp_file
 
 
 def create_cover_page_for_subject(
@@ -289,7 +323,9 @@ def insert_page_numbers(doc: Document) -> None:
 
 def generate_one_document_for_all_subjects(
     subjects: list[SubjectData],
-    employee: EmployeeData,
+    candidate: EmployeeData,
+    assessor: EmployeeData,
+    testing_date_time: dict,
     is_answers_document: bool = False,
 ) -> Path:
     """
@@ -297,26 +333,30 @@ def generate_one_document_for_all_subjects(
     Return list of output file path.
     """
     # Create output document folder
-    output_file_path = OUTPUT_PATH / f"{employee['name']} {employee['license']}"
+    output_file_path = OUTPUT_PATH / f"{candidate['name']} {candidate['license']}"
 
     # Append file name and extension, and if the document contains answers
     if is_answers_document:
-        output_file_path /= f"{employee['name']} {employee['license']} odgovori.docx"
+        output_file_path /= f"{candidate['name']} {candidate['license']} odgovori.docx"
     else:
-        output_file_path /= f"{employee['name']} {employee['license']}.docx"
+        output_file_path /= f"{candidate['name']} {candidate['license']}.docx"
 
     # Create list of temporary files created for each subject
     generated_subject_documents = []
 
     for subject in subjects:
         subject_document_path = generate_document_for_subject(
-            subject, employee, is_answers_document, True
+            subject, candidate, is_answers_document, True
         )
         generated_subject_documents.append(subject_document_path)
 
-    # Create main subject document with main cover page
+    # Create main cover page with populated candidate's and assessor's
+    # full names and license numbers and testing date/time
+    cover_page = create_cover_page(candidate, assessor, testing_date_time)
+
+    # Create main subject document from main cover page
     main_document = Document()
-    main_document.LoadFromFile(str(MAIN_COVER_PAGE))
+    main_document.LoadFromFile(str(cover_page))
 
     # Insert instructions page after cover page
     # Only of questions document, not for answers document
