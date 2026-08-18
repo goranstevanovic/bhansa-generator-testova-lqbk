@@ -97,10 +97,10 @@ class TestLoadEmployeeData:
         assert result == expected_result
 
 
-class TestLoadTestDateAndTime:
-    def test_load_test_date_and_time(self):
-        result = load_test_date_time(SAMPLE_FORM, "B6")
-        expected_result = {"test_date": "03.03.2026.", "test_time": "12:00"}
+class TestLoadTestingDateAndTime:
+    def test_load_testing_date_and_time(self):
+        result = load_testing_date_time(SAMPLE_FORM, "B6")
+        expected_result = {"testing_date": "03.03.2026.", "testing_time": "12:00"}
 
         assert result == expected_result
 
