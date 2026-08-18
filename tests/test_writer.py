@@ -27,6 +27,9 @@ SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS = (
     FIXTURES_PATH / "baza" / "predlosci" / "template-naslovna-odgovori.docx"
 )
 SAMPLE_MAIN_COVER_PAGE = FIXTURES_PATH / "baza" / "predlosci" / "naslovna.docx"
+SAMPLE_INSTRUCTIONS_AFTER_COVER_PAGE = (
+    FIXTURES_PATH / "baza" / "predlosci" / "instrukcije-nakon-naslovne.docx"
+)
 SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
@@ -427,6 +430,7 @@ class TestDocumentsForAllSubjects:
 class TestGenerateOneDocumentForAllSubjects:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.INSTRUCTIONS_AFTER_COVER_PAGE", SAMPLE_INSTRUCTIONS_AFTER_COVER_PAGE)
     @patch("writer.SUBJECT_COVER_TEMPLATE", SAMPLE_SUBJECT_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
@@ -463,6 +467,7 @@ class TestGenerateOneDocumentForAllSubjects:
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.INSTRUCTIONS_AFTER_COVER_PAGE", SAMPLE_INSTRUCTIONS_AFTER_COVER_PAGE)
     @patch("writer.SUBJECT_COVER_TEMPLATE", SAMPLE_SUBJECT_COVER_TEMPLATE)
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
@@ -499,6 +504,7 @@ class TestGenerateOneDocumentForAllSubjects:
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.INSTRUCTIONS_AFTER_COVER_PAGE", SAMPLE_INSTRUCTIONS_AFTER_COVER_PAGE)
     @patch(
         "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
     )
@@ -535,6 +541,7 @@ class TestGenerateOneDocumentForAllSubjects:
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     @patch("writer.MAIN_COVER_PAGE", SAMPLE_MAIN_COVER_PAGE)
+    @patch("writer.INSTRUCTIONS_AFTER_COVER_PAGE", SAMPLE_INSTRUCTIONS_AFTER_COVER_PAGE)
     @patch(
         "writer.SUBJECT_COVER_TEMPLATE_ANSWERS", SAMPLE_SUBJECT_COVER_TEMPLATE_ANSWERS
     )
