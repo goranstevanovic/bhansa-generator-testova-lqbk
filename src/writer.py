@@ -18,6 +18,7 @@ from config import (
     QUESTIONS_PATH,
     ANSWERS_PATH,
     MAIN_COVER_PAGE,
+    INSTRUCTIONS_AFTER_COVER_PAGE,
     SUBJECT_COVER_TEMPLATE,
     SUBJECT_COVER_TEMPLATE_ANSWERS,
     TEMPLATE_TITLE_STRING,
@@ -316,6 +317,13 @@ def generate_one_document_for_all_subjects(
     # Create main subject document with main cover page
     main_document = Document()
     main_document.LoadFromFile(str(MAIN_COVER_PAGE))
+
+    # Insert instructions page after cover page
+    # Only of questions document, not for answers document
+    if not is_answers_document:
+        main_document.InsertTextFromFile(
+            str(INSTRUCTIONS_AFTER_COVER_PAGE), FileFormat.Auto
+        )
 
     for document_path in generated_subject_documents:
         source_document = Document()
