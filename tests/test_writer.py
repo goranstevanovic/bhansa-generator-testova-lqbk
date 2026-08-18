@@ -46,6 +46,12 @@ def sample_assessor():
     return {"name": "Petar PETROVIĆ-PETRIĆ", "license": "atco.4567"}
 
 
+# Sample test date/time
+@pytest.fixture
+def sample_test_date_time():
+    return {"date": "03.03.2026.", "time": "12:00"}
+
+
 # Sample subject
 @pytest.fixture
 def sample_subject():
