@@ -1,5 +1,18 @@
 # Istorija izmijena
 
+## [1.9.0] - 2026-08-18
+
+### Dodato
+
+- Automatsko popunjavanje imena, prezimena i brojeva dozvola kandidata i procjenjivača na naslovnoj stranici
+- Automatsko popunjavanje datuma i vremena početka testiranja na naslovnoj stranici
+
+## [1.8.0] - 2026-08-18
+
+### Dodato
+
+- Nakon naslovne stranice ubačena stranica sa instrukcijama za ubacivanje odštampanog generatora pitanja
+
 ## [1.7.0] - 2026-07-23
 
 ### Izmjenjeno
