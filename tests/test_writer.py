@@ -454,12 +454,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_2,
         sample_subject_3,
         sample_candidate,
+        sample_assessor,
+        sample_test_date_time,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, False
+            subjects, sample_candidate, sample_assessor, sample_test_date_time, False
         )
 
         # Open created document
@@ -491,12 +493,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_2,
         sample_subject_3,
         sample_candidate,
+        sample_assessor,
+        sample_test_date_time,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, False
+            subjects, sample_candidate, sample_assessor, sample_test_date_time, False
         )
 
         # Open created document
@@ -530,12 +534,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_2,
         sample_subject_3,
         sample_candidate,
+        sample_assessor,
+        sample_test_date_time,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, True
+            subjects, sample_candidate, sample_assessor, sample_test_date_time, True
         )
 
         # Open created document
@@ -569,12 +575,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject_2,
         sample_subject_3,
         sample_candidate,
+        sample_assessor,
+        sample_test_date_time,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_candidate, True
+            subjects, sample_candidate, sample_assessor, sample_test_date_time, True
         )
 
         # Open created document
