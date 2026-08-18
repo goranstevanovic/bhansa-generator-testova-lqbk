@@ -278,8 +278,8 @@ def insert_page_numbers(doc: Document) -> None:
         top_border.Space = 8
 
         # Start numbering after cover page
-        if i == 1:
-            # First page after cover starts at page 1
+        if i == 2:
+            # First page after cover and instructions pages starts at page 1
             section.PageSetup.RestartPageNumbering = True
             section.PageSetup.PageStartingNumber = 1
         else:
