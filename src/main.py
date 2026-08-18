@@ -41,7 +41,7 @@ def main() -> None:
     assessor = load_employee_data(form_file, ASSESSOR_CELL)
 
     # Load date and time of taking test
-    test_date_time = load_test_date_time(form_file, TEST_DATE_TIME_CELL)
+    testing_date_time = load_test_date_time(form_file, TEST_DATE_TIME_CELL)
 
     # Load all subject data
     subjects = load_all_subject_data(
@@ -69,7 +69,7 @@ def main() -> None:
 
     # Generate questions document
     generated_questions_document = generate_one_document_for_all_subjects(
-        subjects_with_all_questions, candidate, assessor, test_date_time, False
+        subjects_with_all_questions, candidate, assessor, testing_date_time, False
     )
 
     print_document_generation_done(generated_questions_document)
@@ -80,7 +80,7 @@ def main() -> None:
 
     # Generate answers document
     generated_answers_document = generate_one_document_for_all_subjects(
-        subjects_with_all_answers, candidate, assessor, test_date_time, True
+        subjects_with_all_answers, candidate, assessor, testing_date_time, True
     )
 
     print_document_generation_done(generated_answers_document, True)

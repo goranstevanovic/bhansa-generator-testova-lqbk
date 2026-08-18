@@ -64,7 +64,7 @@ def load_test_date_time(file: Path, cell: str) -> dict:
     loaded_value = _load_cell_value(file, cell)
     date, time = loaded_value.split(" ")
 
-    return {"test_date": date, "test_time": time}
+    return {"testing_date": date, "testing_time": time}
 
 
 def load_subject_titles(file: Path, cell_range: str) -> list[SubjectTitle]:

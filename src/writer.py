@@ -68,7 +68,7 @@ def create_output_document_path(
 
 
 def create_cover_page(
-    candidate: EmployeeData, assessor: EmployeeData, test_date_time: dict
+    candidate: EmployeeData, assessor: EmployeeData, testing_date_time: dict
 ) -> Path:
     """
     Create cover page from cover page template with populated
@@ -82,8 +82,8 @@ def create_cover_page(
         TEMPLATE_CANDIDATE_LICENSE: candidate["license"],
         TEMPLATE_ASSESSOR_NAME: assessor["name"],
         TEMPLATE_ASSESSOR_LICENSE: assessor["license"],
-        TEMPLATE_TESTING_DATE: test_date_time["test_date"],
-        TEMPLATE_TESTING_TIME: test_date_time["test_time"],
+        TEMPLATE_TESTING_DATE: testing_date_time["testing_date"],
+        TEMPLATE_TESTING_TIME: testing_date_time["testing_time"],
     }
 
     cover_page.render(context)
@@ -325,7 +325,7 @@ def generate_one_document_for_all_subjects(
     subjects: list[SubjectData],
     candidate: EmployeeData,
     assessor: EmployeeData,
-    test_date_time: dict,
+    testing_date_time: dict,
     is_answers_document: bool = False,
 ) -> Path:
     """
@@ -352,7 +352,7 @@ def generate_one_document_for_all_subjects(
 
     # Create main cover page with populated candidate's and assessor's
     # full names and license numbers and testing date/time
-    cover_page = create_cover_page(candidate, assessor, test_date_time)
+    cover_page = create_cover_page(candidate, assessor, testing_date_time)
 
     # Create main subject document from main cover page
     main_document = Document()
