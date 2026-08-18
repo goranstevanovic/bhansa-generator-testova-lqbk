@@ -12,6 +12,9 @@ QUESTIONS_GENERATOR = "FORM.xlsm"
 CANDIDATE_CELL = "B4"
 ASSESSOR_CELL = "B5"
 
+# Cell address for testing date/time
+TEST_DATE_TIME = "B6:E6"
+
 # Cell ranges for subject data
 SUBJECT_NAME_RANGE = "A10:A29"
 TOTAL_QUESTIONS_RANGE = "D10:D29"
