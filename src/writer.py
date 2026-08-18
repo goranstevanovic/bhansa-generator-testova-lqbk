@@ -26,7 +26,7 @@ from config import (
     TEMPLATE_CANDIDATE_NAME,
     TEMPLATE_CANDIDATE_LICENSE,
     TEMPLATE_ASSESSOR_NAME,
-    TEMPLATE_ASSESSRO_LICENSE,
+    TEMPLATE_ASSESSOR_LICENSE,
     TEMPLATE_TESTING_DATE,
     TEMPLATE_TESTING_TIME,
 )
@@ -81,7 +81,7 @@ def create_cover_page(
         TEMPLATE_CANDIDATE_NAME: candidate["name"],
         TEMPLATE_CANDIDATE_LICENSE: candidate["license"],
         TEMPLATE_ASSESSOR_NAME: assessor["name"],
-        TEMPLATE_ASSESSRO_LICENSE: assessor["license"],
+        TEMPLATE_ASSESSOR_LICENSE: assessor["license"],
         TEMPLATE_TESTING_DATE: test_date_time["test_date"],
         TEMPLATE_TESTING_TIME: test_date_time["test_time"],
     }
