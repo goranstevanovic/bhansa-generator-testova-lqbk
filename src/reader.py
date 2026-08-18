@@ -60,11 +60,11 @@ def load_employee_data(file: Path, cell: str) -> EmployeeData:
     }
 
 
-def load_test_date_time(file: Path, cell: str) -> tuple[str, str]:
+def load_test_date_time(file: Path, cell: str) -> dict:
     loaded_value = _load_cell_value(file, cell)
     date, time = loaded_value.split(" ")
 
-    return date, time
+    return {"test_date": date, "test_time": time}
 
 
 def load_subject_titles(file: Path, cell_range: str) -> list[SubjectTitle]:
