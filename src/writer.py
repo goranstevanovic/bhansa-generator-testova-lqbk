@@ -289,7 +289,9 @@ def insert_page_numbers(doc: Document) -> None:
 
 def generate_one_document_for_all_subjects(
     subjects: list[SubjectData],
-    employee: EmployeeData,
+    candidate: EmployeeData,
+    assessor: EmployeeData,
+    test_date_time: dict,
     is_answers_document: bool = False,
 ) -> Path:
     """
@@ -297,20 +299,20 @@ def generate_one_document_for_all_subjects(
     Return list of output file path.
     """
     # Create output document folder
-    output_file_path = OUTPUT_PATH / f"{employee['name']} {employee['license']}"
+    output_file_path = OUTPUT_PATH / f"{candidate['name']} {candidate['license']}"
 
     # Append file name and extension, and if the document contains answers
     if is_answers_document:
-        output_file_path /= f"{employee['name']} {employee['license']} odgovori.docx"
+        output_file_path /= f"{candidate['name']} {candidate['license']} odgovori.docx"
     else:
-        output_file_path /= f"{employee['name']} {employee['license']}.docx"
+        output_file_path /= f"{candidate['name']} {candidate['license']}.docx"
 
     # Create list of temporary files created for each subject
     generated_subject_documents = []
 
     for subject in subjects:
         subject_document_path = generate_document_for_subject(
-            subject, employee, is_answers_document, True
+            subject, candidate, is_answers_document, True
         )
         generated_subject_documents.append(subject_document_path)
 

@@ -34,9 +34,9 @@ SAMPLE_TEMPLATE_TITLE_STRING = "naziv"
 SAMPLE_TEMPLATE_ABBREVIATION_STRING = "skracenica"
 
 
-# Sample employee
+# Sample candidate
 @pytest.fixture
-def sample_employee():
+def sample_candidate():
     return {"name": "Marko Marković", "license": "ATCO.0123"}
 
 
@@ -188,31 +188,31 @@ def sample_all_answers():
 class TestCreateOutputDocumentPath:
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
     def test_creates_correct_output_document_path(
-        self, sample_employee, sample_subject
+        self, sample_candidate, sample_subject
     ):
-        result = create_output_document_path(sample_subject, sample_employee)
+        result = create_output_document_path(sample_subject, sample_candidate)
 
         expected_result = (
             Path(SAMPLE_OUTPUT_PATH)
-            / f"{sample_employee['name']} {sample_employee['license']}"
-            / f"{sample_employee['name']} {sample_employee['license']} "
+            / f"{sample_candidate['name']} {sample_candidate['license']}"
+            / f"{sample_candidate['name']} {sample_candidate['license']} "
             f"{sample_subject['abbreviation'].upper()}.docx"
         )
 
         assert result == expected_result
 
     @patch("writer.OUTPUT_PATH", SAMPLE_OUTPUT_PATH)
-    def test_creates_folder_if_not_exists(self, sample_subject, sample_employee):
-        result = create_output_document_path(sample_subject, sample_employee)
+    def test_creates_folder_if_not_exists(self, sample_subject, sample_candidate):
+        result = create_output_document_path(sample_subject, sample_candidate)
 
         assert result.parent.exists()
 
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     def test_creates_temporary_tests_document_path(
-        self, sample_employee, sample_subject
+        self, sample_candidate, sample_subject
     ):
         result = create_output_document_path(
-            sample_subject, sample_employee, False, True
+            sample_subject, sample_candidate, False, True
         )
 
         expected_result = (
@@ -224,10 +224,10 @@ class TestCreateOutputDocumentPath:
 
     @patch("writer.TEMPORARY_PATH", SAMPLE_TEMPORARY_PATH)
     def test_creates_temporary_answers_document_path(
-        self, sample_employee, sample_subject
+        self, sample_candidate, sample_subject
     ):
         result = create_output_document_path(
-            sample_subject, sample_employee, True, True
+            sample_subject, sample_candidate, True, True
         )
 
         expected_result = (
@@ -307,13 +307,13 @@ class TestGenerateDocumentForSubject:
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
     @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
     def test_generates_test_and_test_answers_files_for_single_subject(
-        self, sample_subject, sample_employee
+        self, sample_subject, sample_candidate
     ):
         result_questions = generate_document_for_subject(
-            sample_subject, sample_employee
+            sample_subject, sample_candidate
         )
         result_answers = generate_document_for_subject(
-            sample_subject, sample_employee, True
+            sample_subject, sample_candidate, True
         )
 
         assert result_questions.exists()
@@ -329,9 +329,9 @@ class TestGenerateDocumentForSubject:
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
     def test_generated_test_file_contains_selected_questions(
-        self, sample_subject, sample_employee, sample_questions
+        self, sample_subject, sample_candidate, sample_questions
     ):
-        result = generate_document_for_subject(sample_subject, sample_employee)
+        result = generate_document_for_subject(sample_subject, sample_candidate)
 
         # Open created document
         doc = Document()
@@ -363,9 +363,9 @@ class TestGenerateDocumentForSubject:
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
     def test_generated_test_answers_file_contains_selected_questions(
-        self, sample_subject, sample_employee, sample_answers
+        self, sample_subject, sample_candidate, sample_answers
     ):
-        result = generate_document_for_subject(sample_subject, sample_employee, True)
+        result = generate_document_for_subject(sample_subject, sample_candidate, True)
 
         # Open created document
         doc = Document()
@@ -399,11 +399,11 @@ class TestDocumentsForAllSubjects:
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
     def test_generates_test_files_for_all_subjects(
-        self, sample_subject, sample_subject_2, sample_subject_3, sample_employee
+        self, sample_subject, sample_subject_2, sample_subject_3, sample_candidate
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
-        results = generate_documents_for_all_subjects(subjects, sample_employee)
+        results = generate_documents_for_all_subjects(subjects, sample_candidate)
 
         assert len(results) == 3
         assert all(res.exists() for res in results)
@@ -417,11 +417,11 @@ class TestDocumentsForAllSubjects:
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
     def test_generates_test_answers_files_for_all_subjects(
-        self, sample_subject, sample_subject_2, sample_subject_3, sample_employee
+        self, sample_subject, sample_subject_2, sample_subject_3, sample_candidate
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
-        results = generate_documents_for_all_subjects(subjects, sample_employee, True)
+        results = generate_documents_for_all_subjects(subjects, sample_candidate, True)
 
         assert len(results) == 3
         assert all(res.exists() for res in results)
@@ -441,13 +441,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject,
         sample_subject_2,
         sample_subject_3,
-        sample_employee,
+        sample_candidate,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_employee, False
+            subjects, sample_candidate, False
         )
 
         # Open created document
@@ -478,13 +478,13 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject,
         sample_subject_2,
         sample_subject_3,
-        sample_employee,
+        sample_candidate,
         sample_all_questions,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
         result = generate_one_document_for_all_subjects(
-            subjects, sample_employee, False
+            subjects, sample_candidate, False
         )
 
         # Open created document
@@ -517,12 +517,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject,
         sample_subject_2,
         sample_subject_3,
-        sample_employee,
+        sample_candidate,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
-        result = generate_one_document_for_all_subjects(subjects, sample_employee, True)
+        result = generate_one_document_for_all_subjects(
+            subjects, sample_candidate, True
+        )
 
         # Open created document
         doc = Document()
@@ -554,12 +556,14 @@ class TestGenerateOneDocumentForAllSubjects:
         sample_subject,
         sample_subject_2,
         sample_subject_3,
-        sample_employee,
+        sample_candidate,
         sample_all_answers,
     ):
         subjects = [sample_subject, sample_subject_2, sample_subject_3]
 
-        result = generate_one_document_for_all_subjects(subjects, sample_employee, True)
+        result = generate_one_document_for_all_subjects(
+            subjects, sample_candidate, True
+        )
 
         # Open created document
         doc = Document()
