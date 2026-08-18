@@ -40,6 +40,12 @@ def sample_candidate():
     return {"name": "Marko Marković", "license": "ATCO.0123"}
 
 
+# Sample assessor
+@pytest.fixture
+def sample_assessor():
+    return {"name": "Petar PETROVIĆ-PETRIĆ", "license": "atco.4567"}
+
+
 # Sample subject
 @pytest.fixture
 def sample_subject():
