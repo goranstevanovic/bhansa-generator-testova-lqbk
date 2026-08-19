@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from docxtpl import DocxTemplate
@@ -65,6 +66,42 @@ def create_output_document_path(
     file_name += ".docx"
 
     return folder_path / file_name
+
+
+def calculate_total_points_for_subject(
+    subject: SubjectData,
+):
+    """
+    Calculate total points from all selected questions
+    for a subject.
+    """
+    subject_abbrev = subject["abbreviation"]
+
+    # Create file names from generated numbers
+    question_numbers = subject["generated_numbers"]
+
+    # File names for answers
+    files = [
+        f"{ANSWERS_PATH}/{subject_abbrev}/{number}.docx" for number in question_numbers
+    ]
+
+    total_points = 0
+
+    # Go through each document and get maximum points
+    for file in files:
+        # Set question number to be same as file name
+        temp_question_file = set_question_number(file, subject_abbrev)
+
+        question = Document()
+        question.LoadFromFile(str(temp_question_file))
+        question_text = question.GetText()
+
+        match = re.search(r"Максимално\s*(\d+)", question_text)
+
+        if match:
+            total_points += int(match.group(1))
+
+    return total_points
 
 
 def create_cover_page(
@@ -349,6 +386,15 @@ def generate_one_document_for_all_subjects(
             subject, candidate, is_answers_document, True
         )
         generated_subject_documents.append(subject_document_path)
+
+    # Create a list of points for each question
+    points_per_subject = []
+
+    for subject in subjects:
+        points_per_subject.append(calculate_total_points_for_subject(subject))
+
+    # Total points from all subjects
+    total_points = sum(points_per_subject)
 
     # Create main cover page with populated candidate's and assessor's
     # full names and license numbers and testing date/time
