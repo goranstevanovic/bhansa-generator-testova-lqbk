@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.10.0] - 2026-08-19
+
+### Dodato
+
+- Automatsko izračunavanje i popunjavanje ukupnog broja bodova na testu na naslovnoj stranici
+
 ## [1.9.0] - 2026-08-18
 
 ### Dodato

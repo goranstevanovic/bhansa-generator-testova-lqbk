@@ -448,6 +448,7 @@ class TestGenerateOneDocumentForAllSubjects:
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
     def test_generated_test_file_contains_selected_questions(
         self,
         sample_subject,
@@ -487,6 +488,7 @@ class TestGenerateOneDocumentForAllSubjects:
     @patch("writer.TEMPLATE_TITLE_STRING", SAMPLE_TEMPLATE_TITLE_STRING)
     @patch("writer.TEMPLATE_ABBREVIATION_STRING", SAMPLE_TEMPLATE_ABBREVIATION_STRING)
     @patch("writer.QUESTIONS_PATH", SAMPLE_QUESTIONS_PATH)
+    @patch("writer.ANSWERS_PATH", SAMPLE_ANSWERS_PATH)
     def test_generated_test_file_does_not_contain_non_selected_questions(
         self,
         sample_subject,
