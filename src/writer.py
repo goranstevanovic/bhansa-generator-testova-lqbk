@@ -30,6 +30,7 @@ from config import (
     TEMPLATE_ASSESSOR_LICENSE,
     TEMPLATE_TESTING_DATE,
     TEMPLATE_TESTING_TIME,
+    TEMPLATE_TOTAL_POINTS,
 )
 from models import EmployeeData, SubjectData
 
@@ -105,7 +106,10 @@ def calculate_total_points_for_subject(
 
 
 def create_cover_page(
-    candidate: EmployeeData, assessor: EmployeeData, testing_date_time: dict
+    candidate: EmployeeData,
+    assessor: EmployeeData,
+    testing_date_time: dict,
+    total_points: int,
 ) -> Path:
     """
     Create cover page from cover page template with populated
@@ -121,6 +125,7 @@ def create_cover_page(
         TEMPLATE_ASSESSOR_LICENSE: assessor["license"],
         TEMPLATE_TESTING_DATE: testing_date_time["testing_date"],
         TEMPLATE_TESTING_TIME: testing_date_time["testing_time"],
+        TEMPLATE_TOTAL_POINTS: total_points,
     }
 
     cover_page.render(context)
@@ -398,7 +403,7 @@ def generate_one_document_for_all_subjects(
 
     # Create main cover page with populated candidate's and assessor's
     # full names and license numbers and testing date/time
-    cover_page = create_cover_page(candidate, assessor, testing_date_time)
+    cover_page = create_cover_page(candidate, assessor, testing_date_time, total_points)
 
     # Create main subject document from main cover page
     main_document = Document()
