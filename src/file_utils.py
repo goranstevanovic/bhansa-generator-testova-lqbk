@@ -74,7 +74,7 @@ def check_document_availability(
     return documents_available, documents_not_available
 
 
-def convert_pdf_to_image(subject_abbrev, question_number):
+def convert_pdf_to_image(subject_abbrev: str, question_number: int) -> str:
     """
     Convert PDF file to a PNG image file so it can be inserted
     into a question/answer Word document.
@@ -93,3 +93,5 @@ def convert_pdf_to_image(subject_abbrev, question_number):
     page = doc[0]
     image = page.get_pixmap(dpi=300)
     image.save(image_output_path)
+
+    return image_output_path
