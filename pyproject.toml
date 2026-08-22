@@ -8,6 +8,7 @@ dependencies = [
     "python-docx",
     "spire.doc",
     "docxtpl",
+    "pymupdf",
 ]
 
 [project.optional-dependencies]
