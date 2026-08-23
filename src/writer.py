@@ -224,6 +224,11 @@ def insert_chart(file_path: Path, image: str) -> Path:
     # Insert picture into the new paragraph
     picture = paragraph.AppendPicture(image)
 
+    # Unset picture as inline and move it to top-left corner
+    picture.TextWrappingStyle = TextWrappingStyle.Square
+    picture.HorizontalPosition = 0
+    picture.VerticalPosition = 0
+
     # Save file compatible with Word 2016
     question_doc.SaveToFile(str(file_path), FileFormat.Docx2016)
     question_doc.Close()
