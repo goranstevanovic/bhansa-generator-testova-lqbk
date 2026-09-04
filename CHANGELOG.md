@@ -1,5 +1,11 @@
 # Istorija izmijena
 
+## [1.11.0] - 2026-09-04
+
+### Dodato
+
+- Automatsko ubacivanje karti u pitanja iz oblasti PROC
+
 ## [1.10.0] - 2026-08-19
 
 ### Dodato
