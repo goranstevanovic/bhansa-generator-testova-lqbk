@@ -3,6 +3,8 @@
 import shutil
 import os
 
+import pymupdf
+
 from config import TEMPORARY_PATH, QUESTIONS_PATH, ANSWERS_PATH
 from models import SubjectData
 
@@ -70,3 +72,26 @@ def check_document_availability(
             documents_available.append(subject)
 
     return documents_available, documents_not_available
+
+
+def convert_pdf_to_image(subject_abbrev: str, question_number: int) -> str:
+    """
+    Convert PDF file to a PNG image file so it can be inserted
+    into a question/answer Word document.
+    """
+    pdf_extension = "pdf"
+    image_extension = "png"
+
+    pdf_input_path = (
+        f"{QUESTIONS_PATH}/{subject_abbrev}/{question_number}.{pdf_extension}"
+    )
+    image_output_path = (
+        f"{TEMPORARY_PATH}/{subject_abbrev}-{question_number}.{image_extension}"
+    )
+
+    doc = pymupdf.open(pdf_input_path)
+    page = doc[0]
+    image = page.get_pixmap(dpi=300)
+    image.save(image_output_path)
+
+    return image_output_path

@@ -1,6 +1,6 @@
 [project]
 name = "generator-testova-lqbk"
-version = "1.10.0"
+version = "1.11.0"
 description = "Generator testova LQBK"
 requires-python = ">=3.10"
 dependencies = [
@@ -8,6 +8,7 @@ dependencies = [
     "python-docx",
     "spire.doc",
     "docxtpl",
+    "pymupdf",
 ]
 
 [project.optional-dependencies]
